@@ -5,78 +5,92 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>熊传芝</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root { --ink:#24304b; --purple:#7165c8; --pink:#f3a9c5; --mint:#8fd9c2; --glass:rgba(255,255,255,.91); }
   body {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 20px;
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:
+      radial-gradient(ellipse at 15% 15%,rgba(255,255,255,.62),transparent 27%),
+      radial-gradient(ellipse at 85% 22%,rgba(255,220,239,.65),transparent 28%),
+      linear-gradient(145deg,#8ec5d8 0%,#a9d9c2 42%,#d7c4ec 100%);
+    padding:22px; color:var(--ink); overflow-x:hidden;
   }
-  .view { display: none; }
-  .view.active { display: block; }
+  body:before, body:after { content:""; position:fixed; z-index:-1; pointer-events:none; border-radius:50%; filter:blur(2px); }
+  body:before { width:340px;height:340px;left:-100px;bottom:-150px;background:rgba(255,255,255,.25); }
+  body:after { width:420px;height:420px;right:-150px;top:-180px;background:rgba(255,255,255,.2); }
+  .view { display:none; width:100%; }
+  .view.active { display:block; }
   .card {
-    background: #fff;
-    border-radius: 16px;
-    padding: 36px 30px;
-    max-width: 440px;
-    width: 100%;
-    text-align: center;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, .2);
+    background:var(--glass); backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,.7);
+    border-radius:26px; padding:30px; max-width:500px; width:100%; margin:auto;
+    text-align:center; box-shadow:0 22px 60px rgba(44,57,91,.2);
   }
+  #view-home .card { max-width:560px; padding:34px 32px; }
   .avatar {
-    width: 88px; height: 88px; border-radius: 50%;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: #fff; font-size: 36px; font-weight: bold;
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 18px;
+    width:104px;height:104px;border-radius:32px; margin:0 auto 16px;
+    display:flex;align-items:center;justify-content:center;font-size:58px;
+    background:linear-gradient(145deg,#fff3f8,#d9d1ff);border:4px solid white;
+    box-shadow:0 8px 24px rgba(95,78,157,.2); transform:rotate(-4deg);
   }
-  h1 { font-size: 23px; color: #333; margin-bottom: 8px; }
-  .subtitle { color: #888; font-size: 14px; margin-bottom: 20px; }
-  .intro { color: #555; font-size: 15px; line-height: 1.7; margin-bottom: 24px; }
-  .games { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 18px; }
+  h1 { font-size:26px;color:#28304b;margin-bottom:7px; }
+  .subtitle { color:#777b98;font-size:14px;margin-bottom:18px; }
+  .intro { color:#59617b;font-size:15px;line-height:1.8;margin-bottom:22px; }
+  .section-label { color:#8589a4;font-size:12px;letter-spacing:2px;margin:20px 0 10px;font-weight:700; }
+  .games,.links,.mt,.settings-row { display:flex;gap:10px;justify-content:center;flex-wrap:wrap; }
   .btn {
-    border: none; cursor: pointer; font-size: 15px;
-    padding: 11px 20px; border-radius: 999px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: #fff; font-family: inherit;
-    transition: transform .15s, box-shadow .15s;
-    -webkit-tap-highlight-color: transparent;
+    border:0;cursor:pointer;font-size:14px;padding:11px 18px;border-radius:999px;
+    background:linear-gradient(135deg,#7669cf,#9a78d3);color:#fff;font-family:inherit;
+    transition:transform .16s,box-shadow .16s;box-shadow:0 5px 14px rgba(116,101,198,.18);
+    -webkit-tap-highlight-color:transparent;
   }
-  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(102,126,234,.4); }
-  .btn.ghost { background: #fff; color: #667eea; border: 1px solid #667eea; }
-  .links { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-  .links a {
-    text-decoration: none; color: #667eea; border: 1px solid #667eea;
-    padding: 8px 18px; border-radius: 999px; font-size: 14px; transition: all .2s;
-  }
-  .links a:hover { background: #667eea; color: #fff; }
+  .btn:hover { transform:translateY(-2px);box-shadow:0 9px 18px rgba(116,101,198,.25); }
+  .btn.ghost { background:#fff;color:#6e65b7;border:1px solid #d9d4f2;box-shadow:none; }
+  .btn.small { padding:8px 13px;font-size:13px; }
+  .btn:disabled { opacity:.5;cursor:not-allowed;transform:none; }
+  .links a { text-decoration:none;color:#6e65b7;border:1px solid #d9d4f2;background:#fff;padding:8px 17px;border-radius:999px;font-size:13px;transition:all .2s; }
+  .links a:hover { background:#7669cf;color:#fff; }
+  .game-head { display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:8px; }
+  .game-head .title { font-weight:700;color:#333a59;font-size:16px;white-space:nowrap; }
+  .score { color:#7669cf;font-weight:700;font-size:14px;white-space:nowrap; }
+  canvas { display:block;margin:0 auto;background:#172238;border:5px solid #fff;border-radius:14px;box-shadow:0 8px 22px rgba(30,40,70,.18);touch-action:none; }
+  #snake-canvas { width:min(100%,340px);height:auto; }
+  #tetris-canvas { width:min(100%,220px);height:auto; }
+  .hint { font-size:13px;color:#8589a4;margin:14px 0;line-height:1.7; }
+  .pad { display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:240px;margin:0 auto; }
+  .pad button { padding:13px 0;border:0;border-radius:11px;background:#eeedf8;color:#555276;font-size:18px;cursor:pointer;font-family:inherit;user-select:none; }
+  .pad button:active { background:#dcd7f4;transform:scale(.97); }
+  .pad .wide { grid-column:span 3;font-size:15px; }
+  .mt { margin-top:16px; }
+  .toolbar { display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:12px 0 4px; }
+  .panel { background:rgba(245,244,255,.8);border:1px solid #e5e1f5;border-radius:16px;padding:13px;margin-top:16px; }
+  .panel select,.panel input { accent-color:#7669cf; }
+  .panel select { border:1px solid #d9d4f2;border-radius:9px;padding:7px 10px;background:white;color:#454565;font:inherit; }
+  .stats { display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:18px; }
+  .stat { background:#f4f2fc;border-radius:13px;padding:11px 5px; }
+  .stat b { display:block;color:#6e65b7;font-size:19px; }
+  .stat span { color:#8589a4;font-size:11px; }
+  .tipline { color:#9698ae;font-size:11px;margin-top:18px; }
+  @media(max-width:520px) { body{padding:12px}.card{padding:22px 15px;border-radius:20px}#view-home .card{padding:27px 18px}.game-head .title{font-size:14px}.btn{padding:10px 14px} }
 
-  .game-head {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 14px; gap: 8px;
-  }
-  .game-head .title { font-weight: 600; color: #333; font-size: 16px; white-space: nowrap; }
-  .score { color: #667eea; font-weight: 600; font-size: 14px; white-space: nowrap; }
-  canvas { display: block; margin: 0 auto; background: #111; border-radius: 10px; touch-action: none; }
-  #snake-canvas { width: min(100%, 340px); height: auto; }
-  #tetris-canvas { width: min(100%, 220px); height: auto; }
-  .hint { font-size: 13px; color: #999; margin: 14px 0; line-height: 1.6; }
-  .pad {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 8px; max-width: 240px; margin: 0 auto;
-  }
-  .pad button {
-    padding: 14px 0; border: none; border-radius: 10px;
-    background: #f0f0f5; color: #444; font-size: 18px;
-    cursor: pointer; font-family: inherit; user-select: none;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .pad button:active { background: #ddd; }
-  .pad .wide { grid-column: span 3; font-size: 15px; }
-  .mt { margin-top: 16px; display: flex; gap: 10px; justify-content: center; }
+  .fish-layout { display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left;margin-top:12px; }
+  .fish-panel { background:#f4f3fc;border:1px solid #e3def5;border-radius:15px;padding:13px; }
+  .fish-panel h3 { font-size:14px;color:#555276;margin-bottom:9px; }
+  .fish-big { font-size:48px;text-align:center;padding:12px 0;filter:drop-shadow(0 4px 8px rgba(60,50,100,.18)); }
+  .fish-status { text-align:center;color:#747896;font-size:13px;min-height:40px;line-height:1.6; }
+  .fish-actions { display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px; }
+  .fish-actions .btn { min-width:100px; }
+  .fish-meter { height:9px;background:#e4e2ef;border-radius:99px;overflow:hidden;margin:7px 0; }
+  .fish-meter span { display:block;height:100%;background:linear-gradient(90deg,#83d7bd,#776bd0);width:50%;transition:width .2s; }
+  .fish-list { display:flex;gap:7px;flex-wrap:wrap; }
+  .fish-chip { border-radius:10px;background:white;padding:7px 9px;font-size:12px;color:#5f6080;border:1px solid #e5e1f2; }
+  .fish-chip b { color:#7165c8; }
+  .fish-log { height:94px;overflow:auto;background:#fff;border-radius:10px;padding:8px;font-size:12px;line-height:1.65;color:#73748d; }
+  .fish-select { width:100%;padding:8px;border:1px solid #d9d4f2;border-radius:9px;background:white;color:#555276;font:inherit;font-size:13px;margin-bottom:7px; }
+  .rarity-common { color:#7d8798 }.rarity-uncommon { color:#3b9b70 }.rarity-rare { color:#3977c9 }.rarity-epic { color:#9162c5 }.rarity-legend { color:#c18a25 }
+  @media(max-width:520px){.fish-layout{grid-template-columns:1fr}.fish-big{font-size:42px}}
+
+.fishing-host{max-width:1200px!important;width:100%;padding:12px!important}.fishing-frame{display:block;width:100%;height:calc(100vh - 100px);min-height:760px;border:0;border-radius:16px;background:#d9f7f0}@media(max-width:760px){.fishing-host{padding:6px!important}.fishing-frame{height:calc(100vh - 90px);min-height:820px;border-radius:12px}}
 </style>
 </head>
 <body>
@@ -84,21 +98,37 @@
 <!-- ========== 主页 ========== -->
 <div id="view-home" class="view active">
   <div class="card">
-    <div class="avatar">X</div>
+    <div class="avatar" aria-label="幽灵伙伴头像">👻</div>
     <h1>熊传芝</h1>
-    <p class="subtitle">前端爱好者 · 学生 · 开发者</p>
-    <p class="intro">
-      你好，欢迎来到我的主页。这里是我的个人名片，
-      喜欢用代码做一些有趣的小东西。
-    </p>
+    <p class="subtitle">游戏爱好者 · 前端探索者 · 小小开发者</p>
+    <p class="intro">欢迎来到我的小小游戏基地！<br>这里收录了我制作的小游戏，祝你玩得开心 ✨</p>
+    <div class="section-label">🎮 选择一款小游戏</div>
     <div class="games">
       <button class="btn" data-game="snake">🐍 贪吃蛇</button>
       <button class="btn" data-game="tetris">🧱 俄罗斯方块</button>
+      <button class="btn" data-game="fishing">🎣 斗鱼大陆</button>
     </div>
+    <div class="stats">
+      <div class="stat"><b id="best-snake">0</b><span>贪吃蛇纪录</span></div>
+      <div class="stat"><b id="best-tetris">0</b><span>方块最高分</span></div>
+      <div class="stat"><b id="played-count">0</b><span>游戏启动次数</span></div>
+    </div>
+    <div class="panel">
+      <div class="section-label" style="margin-top:0">⚙️ 游戏设置</div>
+      <div class="settings-row">
+        <button class="btn small ghost" id="music-toggle">♫ 开启音乐</button>
+        <button class="btn small ghost" id="sound-toggle">🔊 音效：开</button>
+        <label style="font-size:13px;color:#777b98;display:flex;align-items:center;gap:7px">难度
+          <select id="difficulty"><option value="easy">轻松</option><option value="normal" selected>普通</option><option value="hard">挑战</option></select>
+        </label>
+      </div>
+    </div>
+    <div class="section-label">🔗 我的空间</div>
     <div class="links">
-      <a href="https://github.com/zc740784654-boop/">GitHub</a>
+      <a href="https://github.com/zc740784654-boop/" target="_blank" rel="noopener">GitHub</a>
       <a href="mailto:you@example.com">邮箱</a>
     </div>
+    <p class="tipline">音乐由浏览器实时合成 · 首次播放请点击“开启音乐”</p>
   </div>
 </div>
 
@@ -120,7 +150,7 @@
       <button data-dir="down">↓</button>
       <button data-dir="right">→</button>
     </div>
-    <div class="mt"><button class="btn" id="snake-restart">重新开始</button></div>
+    <div class="toolbar"><button class="btn small ghost" id="snake-pause">⏸ 暂停</button><button class="btn small" id="snake-restart">重新开始</button></div>
   </div>
 </div>
 
@@ -141,11 +171,398 @@
       <button data-t="down">↓</button>
       <button data-t="drop" class="wide">⤓ 直接落下</button>
     </div>
-    <div class="mt"><button class="btn" id="tetris-restart">重新开始</button></div>
+    <div class="toolbar"><button class="btn small ghost" id="tetris-pause">⏸ 暂停</button><button class="btn small" id="tetris-restart">重新开始</button></div>
   </div>
 </div>
 
+
+<!-- ========== 新版斗鱼大陆 ========== -->
+<div id="view-fishing" class="view"><div class="card fishing-host"><div class="game-head"><button class="btn ghost" data-back>← 返回</button><span class="title">🎣 斗鱼大陆 · 新版</span><span></span></div><iframe class="fishing-frame" title="新版斗鱼大陆" sandbox="allow-scripts allow-same-origin allow-forms allow-modals" srcdoc="&lt;!doctype html&gt;&lt;html lang=&quot;zh-CN&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot;&gt;&lt;title&gt;斗鱼大陆乐园 v5&lt;/title&gt;
+&lt;style&gt;
+*{box-sizing:border-box}body{margin:0;padding:18px;font-family:system-ui,&quot;Microsoft YaHei&quot;,sans-serif;color:#18384c;background:linear-gradient(145deg,#d9f7f0,#c5e4fa,#ddd8fa)}button,select{font:inherit}button{border:0;border-radius:11px;padding:9px 13px;background:#147fa7;color:white;font-weight:700;cursor:pointer;box-shadow:0 3px 0 #0b5979;transition:transform .1s}button:active:not(:disabled){transform:translateY(2px);box-shadow:0 1px 0 #0b5979}button:disabled{opacity:.4;cursor:not-allowed}.alt{background:#eaf4f8;color:#28627c;box-shadow:0 3px 0 #c5dce6}.gold{background:#e8aa32;box-shadow:0 3px 0 #b77916}.red{background:#c95858;box-shadow:0 3px 0 #933b3b}.view{display:none;max-width:1150px;margin:auto}.view.active{display:block}.shell{background:#ffffffed;border:1px solid white;border-radius:22px;padding:20px;box-shadow:0 16px 50px #38677a25}.home{max-width:520px;margin:8vh auto;text-align:center}.avatar{font-size:48px}.muted{color:#688397}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.wallet{padding:9px 14px;background:#fff1d0;border-radius:30px;color:#95620d;font-weight:900}.tabs{display:flex;gap:7px;flex-wrap:wrap;margin:15px 0}.tabs button{background:#e7f3f7;color:#35677d;box-shadow:none}.tabs button.on{background:#147fa7;color:white}.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:14px}.panel{background:#f2f9fb;border:1px solid #d8e9ef;border-radius:16px;padding:14px;margin-bottom:12px}.panel h3{margin:0 0 10px}.water{height:215px;border-radius:15px;position:relative;overflow:hidden;background:linear-gradient(#a7eaf0,#48a9cc 60%,#12658e);border:3px solid #d3f4f1}.water.deep{background:linear-gradient(#18365c,#0a2544 60%,#06162b)}.water.lava{background:linear-gradient(#ffb04c,#d64a27 60%,#511718)}.water.ice{background:linear-gradient(#ddf8ff,#81cbed 60%,#387ba3)}.water.thunder{background:linear-gradient(#4a4a8f,#2a2a5e 60%,#131333)}.water.swamp{background:linear-gradient(#7ba860,#4a7a32 60%,#254018)}.water:after{content:&quot;&quot;;position:absolute;inset:0;background:radial-gradient(white 1px,transparent 2px);background-size:50px 43px;opacity:.5;animation:drift 5s linear infinite}@keyframes drift{to{background-position:50px 43px}}.water b{position:absolute;z-index:1;top:12px;left:12px;background:#ffffffc9;padding:6px 10px;border-radius:20px}.swim{position:absolute;z-index:1;top:48%;left:12%;font-size:42px;animation:swim 5s ease-in-out infinite alternate}@keyframes swim{to{left:75%;transform:scaleX(-1) translateY(-15px)}}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}select{padding:9px;border:1px solid #c9dce4;border-radius:9px;background:white}.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(135px,1fr));gap:8px}.fish{background:white;border:1px solid #d8e8ed;border-radius:12px;padding:9px;cursor:pointer;font:inherit;color:inherit;text-align:left;box-shadow:none}.fish.sel{outline:3px solid #49a9c8}.fish .em{font-size:29px}.fish small{display:block;color:#678095}.log{background:#102d43;color:#d7f3f3;border-radius:11px;padding:10px;height:100px;overflow:auto;font-size:13px}.log p{margin:2px 0}.rarity{font-size:11px;font-weight:800;color:#75899b}.epic{color:#a24dc2}.legend{color:#c58a19}.mutant{color:#d34b75}.battle{background:linear-gradient(#83dce5,#3898b9 60%,#1c5e82);color:white;border-radius:16px;padding:14px;overflow:hidden;position:relative}.fighters{display:flex;justify-content:space-between;align-items:center;text-align:center;gap:8px}.fighter{width:42%}.sprite{font-size:68px;display:block;animation:bob 1.6s ease-in-out infinite alternate;filter:drop-shadow(0 7px 4px #123a5577)}.sprite.attack{animation:attack .42s ease!important}.sprite.damage{animation:damage .38s ease!important}@keyframes attack{0%{transform:translateX(0) scale(1)}45%{transform:translateX(28px) scale(1.22)}100%{transform:translateX(0) scale(1)}}@keyframes damage{0%,100%{filter:brightness(1)}35%{filter:brightness(2) saturate(0);transform:translateX(-8px)}70%{transform:translateX(7px)}}@keyframes bob{to{transform:translateY(-12px) rotate(5deg)}}.vs{font-size:24px;color:#ffe28a;font-weight:1000}.bar{height:8px;background:#163d55aa;border-radius:9px;overflow:hidden;margin:4px 0}.bar i{display:block;height:100%;background:#71e58c;width:100%;transition:.3s}.skills{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:10px 0}.skills button{font-size:12px;min-height:55px;padding:6px}.skills small{display:block;font-weight:400;font-size:10px;opacity:.85}.msg{color:#426b7f}.shop{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:8px}.shop&gt;div{background:white;border:1px solid #d8e8ed;border-radius:12px;padding:10px}.hide{display:none!important}
+.team-slots{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:12px}.team-slot{background:#fff;border:2px dashed #c5dce6;border-radius:11px;padding:8px 4px;text-align:center;min-height:78px;cursor:pointer;font-size:11px}.team-slot.filled{border-style:solid;border-color:#147fa7;background:#eaf6fa}.team-slot .em{font-size:26px;display:block}.team-slot small{display:block;color:#678095;font-size:10px;margin-top:2px}.team-slot .hp{height:4px;background:#e0eaf0;border-radius:3px;overflow:hidden;margin-top:3px}.team-slot .hp i{display:block;height:100%;background:#71e58c}
+.team-bar{display:flex;gap:4px;margin:6px 0;flex-wrap:wrap;justify-content:center}.tb-slot{background:#ffffffaa;border-radius:7px;padding:3px 7px;font-size:11px;display:inline-flex;gap:3px;color:#18384c;font-weight:700}.tb-slot.active{outline:2px solid #ffcf4c;background:#fffbe6}.tb-slot.dead{opacity:.35;text-decoration:line-through}
+.status-icons{display:flex;gap:4px;justify-content:center;min-height:20px;margin:4px 0;flex-wrap:wrap}.status-icons span{background:#00000066;color:#fff;border-radius:6px;padding:2px 5px;font-size:10px;font-weight:700;white-space:nowrap}
+.rar-banner{position:fixed;inset:0;display:grid;place-items:center;font-size:80px;background:radial-gradient(#ffffff33,#00000000);z-index:99;pointer-events:none;animation:flash .8s ease forwards}@keyframes flash{0%{opacity:0;transform:scale(.3)}40%{opacity:1;transform:scale(1.1)}100%{opacity:0;transform:scale(1.5)}}
+.bgm-btn{position:fixed;top:14px;right:14px;z-index:50;background:#ffffffd9;color:#28627c;box-shadow:0 3px 0 #c5dce6;font-size:13px;padding:8px 14px;border-radius:30px}
+.storage-item{display:flex;flex-direction:column;gap:6px;background:white;border:1px solid #d8e8ed;border-radius:12px;padding:12px;margin-bottom:8px}
+.storage-item .row1{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.storage-item .row2{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:4px}
+.storage-item .stats{font-size:13px;color:#4b6b7d}
+.storage-item .stats b{color:#18384c}
+#reel.biting{animation:bite-flash .2s infinite alternate!important;background:#ff3b3b!important;box-shadow:0 3px 0 #b00000,0 0 20px #ff3b3b!important;color:#fff!important}
+@keyframes bite-flash{from{opacity:1}to{opacity:.55}}
+.reel-challenge{background:#e5f3f8;border:1px solid #b8dce8;border-radius:12px;padding:12px;margin:10px 0}.reel-track{height:22px;border-radius:20px;background:linear-gradient(90deg,#f6c5c5,#f5e6a8,#b9edc7,#f5e6a8,#f6c5c5);position:relative;overflow:hidden;border:2px solid #fff;box-shadow:inset 0 1px 4px #31566a55}.reel-track i{position:absolute;top:0;bottom:0;background:#42c97888;border-left:2px solid #16894b;border-right:2px solid #16894b}.reel-track b{position:absolute;top:-3px;bottom:-3px;width:5px;background:#143e63;border-radius:5px;box-shadow:0 0 5px white;left:0}.reel-challenge small{display:block;margin-top:7px;color:#426b7f}.status-banner{background:#fff3cd;border:1px solid #ffe0a3;border-radius:10px;padding:8px 12px;margin:8px 0;font-size:13px;color:#8a6d2f}
+@media(max-width:760px){body{padding:9px}.shell{padding:13px}.grid{grid-template-columns:1fr}.sprite{font-size:53px}.skills{grid-template-columns:repeat(2,1fr)}.team-slots{grid-template-columns:repeat(3,1fr)}}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;button class=&quot;bgm-btn&quot; id=&quot;bgmBtn&quot;&gt;🎵 音乐&lt;/button&gt;
+&lt;div id=&quot;home&quot; class=&quot;view&quot;&gt;&lt;div class=&quot;shell home&quot;&gt;&lt;div class=&quot;avatar&quot;&gt;🎣🐟&lt;/div&gt;&lt;h1&gt;熊传芝的小游戏乐园&lt;/h1&gt;&lt;p class=&quot;muted&quot;&gt;钓鱼、收集、育成、进化、状态博弈，组队挑战鱼王与竞技场。&lt;/p&gt;&lt;button onclick=&quot;go(&#x27;game&#x27;)&quot;&gt;进入钓鱼斗鱼&lt;/button&gt;&lt;p class=&quot;muted&quot; style=&quot;margin-top:14px;font-size:13px&quot;&gt;队伍上限 6 条 · 遭遇战 1v1 · 鱼王 6v1 · 竞技场 6v6&lt;br&gt;🔥火 → ❄️冰 → ⚡雷 → 🔥火&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div id=&quot;game&quot; class=&quot;view active&quot;&gt;&lt;div class=&quot;shell&quot;&gt;&lt;div class=&quot;top&quot;&gt;&lt;div&gt;&lt;button class=&quot;alt&quot; onclick=&quot;go(&#x27;home&#x27;)&quot;&gt;← 主页&lt;/button&gt;&lt;h1&gt;🎣 深海钓鱼斗鱼乐园 · 第五版&lt;/h1&gt;&lt;span class=&quot;muted&quot;&gt;QTE 钓鱼 · 仓库出售 · 稀有度面板 · 状态异常&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;wallet&quot;&gt;🪙 &lt;span id=&quot;coins&quot;&gt;200&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;tabs&quot; id=&quot;tabs&quot;&gt;&lt;button class=&quot;on&quot; data-t=&quot;fish&quot;&gt;钓鱼水域&lt;/button&gt;&lt;button data-t=&quot;book&quot;&gt;鱼类图鉴&lt;/button&gt;&lt;button data-t=&quot;team&quot;&gt;出战队伍&lt;/button&gt;&lt;button data-t=&quot;storage&quot;&gt;📦 仓库&lt;/button&gt;&lt;button data-t=&quot;train&quot;&gt;鱼类育成&lt;/button&gt;&lt;button data-t=&quot;arena&quot;&gt;斗鱼竞技场&lt;/button&gt;&lt;button data-t=&quot;boss&quot;&gt;巨型鱼王&lt;/button&gt;&lt;button data-t=&quot;shop&quot;&gt;商店&lt;/button&gt;&lt;button data-t=&quot;bag&quot;&gt;背包&lt;/button&gt;&lt;/div&gt;
+&lt;section id=&quot;p-fish&quot;&gt;&lt;div class=&quot;grid&quot;&gt;&lt;div&gt;&lt;div class=&quot;panel&quot;&gt;&lt;h3&gt;🌊 水域探索&lt;/h3&gt;&lt;div id=&quot;zones&quot; class=&quot;tabs&quot;&gt;&lt;/div&gt;&lt;div id=&quot;water&quot; class=&quot;water&quot;&gt;&lt;b id=&quot;zname&quot;&gt;宁静池塘&lt;/b&gt;&lt;span class=&quot;swim&quot; id=&quot;swim&quot;&gt;🐟&lt;/span&gt;&lt;/div&gt;&lt;p class=&quot;muted&quot; id=&quot;zdesc&quot;&gt;&lt;/p&gt;&lt;div class=&quot;row&quot;&gt;&lt;label&gt;鱼饵&lt;/label&gt;&lt;select id=&quot;bait&quot;&gt;&lt;option value=&quot;worm&quot;&gt;蚯蚓（免费/无宝物）&lt;/option&gt;&lt;option value=&quot;grain&quot;&gt;谷物 15G（2%宝物）&lt;/option&gt;&lt;option value=&quot;shrimp&quot;&gt;虾肉 25G（4%宝物）&lt;/option&gt;&lt;option value=&quot;glow&quot;&gt;荧光饵 35G（8%宝物）&lt;/option&gt;&lt;option value=&quot;abyss&quot;&gt;深渊诱饵 50G（15%宝物）&lt;/option&gt;&lt;option value=&quot;lure&quot;&gt;🎯 诱敌饵料（30G/个，稀有鱼概率翻倍，成功钓起鱼必触发遭遇战）&lt;/option&gt;&lt;/select&gt;&lt;button id=&quot;cast&quot;&gt;抛竿&lt;/button&gt;&lt;button id=&quot;reel&quot; class=&quot;gold&quot; disabled&gt;收竿&lt;/button&gt;&lt;/div&gt;&lt;p id=&quot;status&quot; class=&quot;muted&quot;&gt;准备好就抛竿吧。&lt;/p&gt;&lt;div id=&quot;reelChallenge&quot; class=&quot;reel-challenge hide&quot;&gt;&lt;div class=&quot;reel-track&quot;&gt;&lt;i id=&quot;reelTarget&quot;&gt;&lt;/i&gt;&lt;b id=&quot;reelMarker&quot;&gt;&lt;/b&gt;&lt;/div&gt;&lt;small id=&quot;reelDifficulty&quot;&gt;观察指针，进入目标区间时点击收竿！&lt;/small&gt;&lt;/div&gt;&lt;div class=&quot;status-banner&quot; id=&quot;qteHint&quot;&gt;🎣 咬钩后会出现动态进度条，在指针进入目标区间时点击「收竿」。鱼越稀有，目标区间越窄，难度越高。&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;panel&quot;&gt;&lt;h3&gt;📜 冒险记录&lt;/h3&gt;&lt;div class=&quot;log&quot; id=&quot;log&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div class=&quot;panel&quot;&gt;&lt;h3&gt;🐠 当前出战（队伍首位）&lt;/h3&gt;&lt;div id=&quot;active&quot;&gt;尚未捕获鱼类。&lt;/div&gt;&lt;button class=&quot;alt&quot; id=&quot;rest&quot;&gt;全队休整&lt;/button&gt;&lt;/div&gt;&lt;div class=&quot;panel&quot;&gt;&lt;h3&gt;队伍概览&lt;/h3&gt;&lt;div id=&quot;teampreview&quot; class=&quot;cards&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;
+&lt;section id=&quot;p-book&quot; class=&quot;hide&quot;&gt;&lt;div class=&quot;panel&quot;&gt;&lt;h3&gt;📖 鱼类图鉴&lt;/h3&gt;&lt;p class=&quot;muted&quot;&gt;所有拥有的鱼。出售和详细属性请移步「📦 仓库」。&lt;/p&gt;&lt;div id=&quot;book&quot; class=&quot;cards&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;
+&lt;section id=&quot;p-team&quot; class=&quot;hide&quot;&gt;&lt;div class=&quot;panel&quot;&gt;&lt;h3&gt;⚔️ 出战队伍（最多 6 条 · 点击可移出）&lt;/h3&gt;&lt;div class=&quot;team-slots&quot; id=&quot;teamSlots&quot;&gt;&lt;/div&gt;&lt;p class=&quot;muted&quot;&gt;遭遇战只使用队伍首位；鱼王和竞技场会依次使用整支队伍。&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;panel&quot;&gt;&lt;h3&gt;📦 仓库（点击加入队伍）&lt;/h3&gt;&lt;div id=&quot;warehouse&quot; class=&quot;cards&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;
+&lt;section id=&quot;p-storage&quot; class=&quot;hide&quot;&gt;&lt;div class=&quot;panel&quot;&gt;&lt;h3&gt;📦 仓库 · 查看属性 &amp; 出售&lt;/h3&gt;&lt;p class=&quot;muted&quot;&gt;这里显示所有鱼（包括队伍中的）。队伍中的鱼需要先在「出战队伍」移出才能出售。&lt;/p&gt;&lt;div id=&quot;storageList&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;
+&lt;section id=&quot;p-train&quot; class=&quot;hide&quot;&gt;&lt;div class=&quot;grid&quot;&gt;&lt;div class=&quot;panel&quot;&gt;&lt;h3&gt;🧬 育成与进化&lt;/h3&gt;&lt;div id=&quot;traininfo&quot;&gt;选择一条鱼。&lt;/div&gt;&lt;div class=&quot;row&quot;&gt;&lt;button id=&quot;feed&quot;&gt;喂食育成道具&lt;/button&gt;&lt;button id=&quot;evolve&quot; class=&quot;gold&quot;&gt;进化&lt;/button&gt;&lt;/div&gt;&lt;p class=&quot;muted&quot;&gt;喂食 +100 经验；Lv.5 且消耗 1 宝物可进化。出售鱼类请到「📦 仓库」。&lt;/p&gt;&lt;/div&gt;&lt;div class=&quot;panel&quot;&gt;&lt;h3&gt;进化说明&lt;/h3&gt;&lt;p&gt;育成道具通过野怪、鱼王获得。宝物只能通过购买鱼饵随机钓到，也可以出售换金币。&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;
+&lt;section id=&quot;p-arena&quot; class=&quot;hide&quot;&gt;&lt;div class=&quot;panel&quot;&gt;&lt;h3&gt;🏟️ 斗鱼竞技场 · 6v6&lt;/h3&gt;&lt;p id=&quot;arenaInfo&quot;&gt;七大海域各自记录连胜与历史最高纪录。打破个人历史最高连胜时，必得60金币+育成道具×1；其他胜利按70%获得50金币、30%获得育成道具×1。&lt;/p&gt;&lt;button id=&quot;arena&quot;&gt;开始竞技&lt;/button&gt;&lt;p class=&quot;muted&quot;&gt;敌人来自当前海域鱼种，连胜越高等级越高；失败后连胜与等级重置。奖励：普通胜利70%金币50G、30%育成道具×1；刷新本海域历史最高连胜时必得60G+育成道具×1。整支队伍依次上场。战斗中可换鱼，但会消耗本回合，换人当回合受到的伤害降低 20%。&lt;/p&gt;&lt;/div&gt;&lt;/section&gt;
+&lt;section id=&quot;p-boss&quot; class=&quot;hide&quot;&gt;&lt;div class=&quot;panel&quot;&gt;&lt;h3&gt;👑 巨型鱼王 · 6v1&lt;/h3&gt;&lt;div id=&quot;bossInfo&quot;&gt;&lt;/div&gt;&lt;button id=&quot;boss&quot; class=&quot;red&quot;&gt;挑战本区鱼王&lt;/button&gt;&lt;p&gt;鱼王拥有专属技能与巨额生命。首胜必得宝物×1、育成道具×2、100金币；之后每次胜利获得育成道具×1、50金币。每次胜利鱼王永久提升1级。&lt;/p&gt;&lt;/div&gt;&lt;/section&gt;
+&lt;section id=&quot;p-shop&quot; class=&quot;hide&quot;&gt;&lt;div class=&quot;panel&quot;&gt;&lt;h3&gt;🛒 商店&lt;/h3&gt;&lt;div class=&quot;shop&quot; id=&quot;shop&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;
+&lt;section id=&quot;p-bag&quot; class=&quot;hide&quot;&gt;&lt;div class=&quot;panel&quot;&gt;&lt;h3&gt;🎒 背包&lt;/h3&gt;&lt;div id=&quot;bag&quot;&gt;&lt;/div&gt;&lt;div class=&quot;row&quot;&gt;&lt;button class=&quot;gold&quot; id=&quot;selltreasure&quot;&gt;出售宝物（120G/个）&lt;/button&gt;&lt;button class=&quot;alt&quot; id=&quot;selljunk&quot;&gt;出售杂物（2G/个）&lt;/button&gt;&lt;/div&gt;&lt;p class=&quot;muted&quot;&gt;野怪掉落杂物，鱼王掉落宝物与杂物。宝物也可以在钓到稀有鱼时兑换金币。&lt;/p&gt;&lt;/div&gt;&lt;/section&gt;
+&lt;section id=&quot;fight&quot; class=&quot;hide&quot;&gt;&lt;div class=&quot;panel&quot;&gt;&lt;div class=&quot;top&quot;&gt;&lt;div&gt;&lt;h3 id=&quot;fighttitle&quot;&gt;⚔️ 遭遇战&lt;/h3&gt;&lt;span class=&quot;muted&quot;&gt;元素克制 · 状态异常 · 换人减伤&lt;/span&gt;&lt;/div&gt;&lt;button class=&quot;alt&quot; id=&quot;leave&quot;&gt;返回探索&lt;/button&gt;&lt;/div&gt;&lt;div class=&quot;battle&quot; id=&quot;arenaView&quot;&gt;&lt;b id=&quot;battleTitle&quot;&gt;野生鱼出现！&lt;/b&gt;&lt;div class=&quot;team-bar&quot; id=&quot;enemyTeamBar&quot;&gt;&lt;/div&gt;&lt;div class=&quot;fighters&quot;&gt;&lt;div class=&quot;fighter&quot;&gt;&lt;span id=&quot;asprite&quot; class=&quot;sprite&quot;&gt;🐢&lt;/span&gt;&lt;b id=&quot;aname&quot;&gt;己方&lt;/b&gt;&lt;div id=&quot;atype&quot;&gt;&lt;/div&gt;&lt;div class=&quot;status-icons&quot; id=&quot;astatus&quot;&gt;&lt;/div&gt;&lt;div class=&quot;bar&quot;&gt;&lt;i id=&quot;ahp&quot;&gt;&lt;/i&gt;&lt;/div&gt;&lt;small id=&quot;ahpt&quot;&gt;&lt;/small&gt;&lt;div class=&quot;bar&quot;&gt;&lt;i id=&quot;aen&quot; style=&quot;background:#ffcf4c&quot;&gt;&lt;/i&gt;&lt;/div&gt;&lt;small id=&quot;aent&quot;&gt;&lt;/small&gt;&lt;/div&gt;&lt;div class=&quot;vs&quot;&gt;VS&lt;/div&gt;&lt;div class=&quot;fighter foe&quot;&gt;&lt;span id=&quot;esprite&quot; class=&quot;sprite&quot;&gt;🦑&lt;/span&gt;&lt;b id=&quot;ename&quot;&gt;野生鱼&lt;/b&gt;&lt;div id=&quot;etype&quot;&gt;&lt;/div&gt;&lt;div class=&quot;status-icons&quot; id=&quot;estatus&quot;&gt;&lt;/div&gt;&lt;div class=&quot;bar&quot;&gt;&lt;i id=&quot;ehp&quot;&gt;&lt;/i&gt;&lt;/div&gt;&lt;small id=&quot;ehpt&quot;&gt;&lt;/small&gt;&lt;div class=&quot;bar&quot;&gt;&lt;i id=&quot;een&quot; style=&quot;background:#ffcf4c&quot;&gt;&lt;/i&gt;&lt;/div&gt;&lt;small id=&quot;eent&quot;&gt;&lt;/small&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;team-bar&quot; id=&quot;playerTeamBar&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;skills&quot;&gt;&lt;button id=&quot;atkL&quot;&gt;⚡ 轻攻击&lt;small&gt;消耗1能量 · 1.3×伤害&lt;/small&gt;&lt;/button&gt;&lt;button id=&quot;atkH&quot; class=&quot;gold&quot;&gt;💥 重攻击&lt;small&gt;消耗3能量 · 2.2×伤害&lt;/small&gt;&lt;/button&gt;&lt;button id=&quot;wait&quot;&gt;💤 休整&lt;small&gt;回10%血 · +2能量&lt;/small&gt;&lt;/button&gt;&lt;button id=&quot;guard&quot; class=&quot;alt&quot;&gt;🛡️ 防御&lt;small&gt;减伤50% · +1能量&lt;/small&gt;&lt;/button&gt;&lt;/div&gt;&lt;div class=&quot;row&quot;&gt;&lt;button id=&quot;unique&quot; class=&quot;alt&quot;&gt;专属技能&lt;/button&gt;&lt;button id=&quot;capture&quot; class=&quot;alt&quot;&gt;尝试收服&lt;/button&gt;&lt;button id=&quot;switchBtn&quot; class=&quot;alt&quot;&gt;换鱼（消耗回合）&lt;/button&gt;&lt;/div&gt;&lt;div id=&quot;switchPanel&quot; class=&quot;hide&quot; style=&quot;margin-top:8px&quot;&gt;&lt;h4&gt;选择要上场的鱼（对手白赚一回合，受伤 -20%）&lt;/h4&gt;&lt;div id=&quot;switchList&quot; class=&quot;cards&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;p id=&quot;fightmsg&quot; class=&quot;msg&quot;&gt;&lt;/p&gt;&lt;div class=&quot;log&quot; id=&quot;fightlog&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/section&gt;
+&lt;/div&gt;&lt;/div&gt;
+&lt;script&gt;
+const $=id=&gt;document.getElementById(id);
+/* ============ 音效 &amp; BGM ============ */
+const SFX=(()=&gt;{let ctx=null,muted=false;function ac(){if(!ctx)ctx=new(window.AudioContext||window.webkitAudioContext)();if(ctx.state===&#x27;suspended&#x27;)ctx.resume();return ctx}function beep(f,d,t=&#x27;square&#x27;,v=0.06,s=null){if(muted)return;try{const c=ac(),o=c.createOscillator(),g=c.createGain();o.type=t;o.frequency.setValueAtTime(f,c.currentTime);if(s)o.frequency.exponentialRampToValueAtTime(s,c.currentTime+d);g.gain.setValueAtTime(v,c.currentTime);g.gain.exponentialRampToValueAtTime(0.0001,c.currentTime+d);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+d)}catch(e){}}return{
+cast(){beep(400,0.15,&#x27;sine&#x27;,0.05,900)},reel(){beep(880,0.08,&#x27;square&#x27;,0.04)},bite(){[880,988,1175].forEach((f,i)=&gt;setTimeout(()=&gt;beep(f,0.08,&#x27;square&#x27;,0.07),i*60))},catchFish(){[523,659,784,1046].forEach((f,i)=&gt;setTimeout(()=&gt;beep(f,0.1,&#x27;triangle&#x27;,0.06),i*70))},rare(){[523,659,784,1046,1318].forEach((f,i)=&gt;setTimeout(()=&gt;beep(f,0.15,&#x27;triangle&#x27;,0.08),i*90))},atkL(){beep(440,0.08,&#x27;square&#x27;,0.06,300)},atkH(){beep(200,0.18,&#x27;sawtooth&#x27;,0.08,80)},hit(){beep(120,0.12,&#x27;sawtooth&#x27;,0.06,50)},heal(){beep(660,0.15,&#x27;sine&#x27;,0.05,880)},guard(){beep(330,0.1,&#x27;triangle&#x27;,0.05)},switchFish(){beep(300,0.1,&#x27;sine&#x27;,0.05,600)},status(){beep(700,0.2,&#x27;sawtooth&#x27;,0.06,200)},win(){[523,659,784,1046].forEach((f,i)=&gt;setTimeout(()=&gt;beep(f,0.2,&#x27;triangle&#x27;,0.08),i*130))},lose(){[440,330,262,196].forEach((f,i)=&gt;setTimeout(()=&gt;beep(f,0.22,&#x27;sawtooth&#x27;,0.07),i*140))},
+toggle(){muted=!muted;return muted},get muted(){return muted}}})();
+const BGM=(()=&gt;{let ctx=null,master=null,timer=null,playing=false,idx=0;const mel=[392,0,523,0,659,0,523,0,440,0,587,0,698,0,587,0,523,0,659,0,784,0,659,0,392,0,523,0,659,0,0,0];const bass=[196,196,196,196,220,220,220,220,262,262,262,262,196,196,196,196];const bossMel=[392,392,523,659,784,659,880,784,698,698,880,1046,988,880,784,659,523,659,784,1046,1175,1046,988,880,784,659,784,880,1046,1318,1175,1046];const bossBass=[98,98,147,147,110,110,165,165,130,130,196,196,98,98,147,147];let bossMode=false;const beat=190;function ac(){if(!ctx)ctx=new(window.AudioContext||window.webkitAudioContext)();if(ctx.state===&#x27;suspended&#x27;)ctx.resume();return ctx}function note(f,d,v,t=&#x27;triangle&#x27;){if(!f)return;try{const c=ac(),o=c.createOscillator(),g=c.createGain();o.type=t;o.frequency.value=f;g.gain.setValueAtTime(0.0001,c.currentTime);g.gain.exponentialRampToValueAtTime(v,c.currentTime+0.02);g.gain.exponentialRampToValueAtTime(0.0001,c.currentTime+d);o.connect(g);g.connect(master);o.start();o.stop(c.currentTime+d)}catch(e){}}return{
+start(){if(playing)return;playing=true;const c=ac();master=c.createGain();master.gain.value=0.12;master.connect(c.destination);timer=setInterval(()=&gt;{note((bossMode?bossMel:mel)[idx%(bossMode?bossMel.length:mel.length)],beat/1000*0.85,bossMode?0.055:0.04,bossMode?&#x27;sawtooth&#x27;:&#x27;triangle&#x27;);note((bossMode?bossBass:bass)[idx%(bossMode?bossBass.length:bass.length)],beat/1000*0.85,bossMode?0.04:0.025,&#x27;sine&#x27;);idx++},beat)},stop(){playing=false;clearInterval(timer);timer=null},setBoss(on){bossMode=!!on;idx=0},toggle(){playing?this.stop():this.start();return playing},get playing(){return playing}}})();
+$(&#x27;bgmBtn&#x27;).onclick=()=&gt;{const on=BGM.toggle();$(&#x27;bgmBtn&#x27;).textContent=on?&#x27;🔇 关闭音乐&#x27;:&#x27;🎵 音乐&#x27;};
+document.addEventListener(&#x27;pointerdown&#x27;,()=&gt;{if(!BGM.playing){BGM.start();$(&#x27;bgmBtn&#x27;).textContent=&#x27;🔇 关闭音乐&#x27;}},{once:true});
+/* ============ 数据 ============ */
+const zones=[
+{id:&#x27;pond&#x27;,n:&#x27;宁静池塘&#x27;,d:&#x27;新手浅水区，锦鲤与鲶鱼常见。&#x27;,emoji:&#x27;🐟&#x27;,need:0,rod:1,fish:[&#x27;minnow&#x27;,&#x27;koi&#x27;,&#x27;catfish&#x27;,&#x27;gold&#x27;],cls:&#x27;&#x27;},
+{id:&#x27;river&#x27;,n:&#x27;清澈河流&#x27;,d:&#x27;水流湍急，狗鱼、海蛇和乌贼出没。&#x27;,emoji:&#x27;🐠&#x27;,need:90,rod:1,fish:[&#x27;pike&#x27;,&#x27;snake&#x27;,&#x27;squid&#x27;,&#x27;catfish&#x27;],cls:&#x27;&#x27;},
+{id:&#x27;lake&#x27;,n:&#x27;星辉湖泊&#x27;,d:&#x27;月光下的深水湖，海龟与月影鱼栖息。&#x27;,emoji:&#x27;🌙&#x27;,need:220,rod:2,fish:[&#x27;moon&#x27;,&#x27;turtle&#x27;,&#x27;squid&#x27;,&#x27;snake&#x27;],cls:&#x27;&#x27;},
+{id:&#x27;deep&#x27;,n:&#x27;幽暗深海&#x27;,d:&#x27;深海巨压之下，乌贼与深渊灯鱼游弋。&#x27;,emoji:&#x27;🦑&#x27;,need:420,rod:3,fish:[&#x27;squid&#x27;,&#x27;snake&#x27;,&#x27;abyss&#x27;,&#x27;turtle&#x27;],cls:&#x27;deep&#x27;},
+{id:&#x27;lava&#x27;,n:&#x27;熔岩湖&#x27;,d:&#x27;灼热岩浆中生存着熔岩系与火焰新种。&#x27;,emoji:&#x27;🌋&#x27;,need:700,rod:4,castCost:10,fish:[&#x27;lava&#x27;,&#x27;magma&#x27;,&#x27;salamander&#x27;,&#x27;firekoi&#x27;,&#x27;firesala&#x27;,&#x27;firepiranha&#x27;,&#x27;phoenix&#x27;],cls:&#x27;lava&#x27;},
+{id:&#x27;ice&#x27;,n:&#x27;冰封湖泊&#x27;,d:&#x27;冰层之下沉睡着古老冰龟与冰霜新种。&#x27;,emoji:&#x27;❄️&#x27;,need:800,rod:5,castCost:10,fish:[&#x27;ice&#x27;,&#x27;frostturtle&#x27;,&#x27;icekoi&#x27;,&#x27;iceshark&#x27;,&#x27;snowjelly&#x27;,&#x27;icedragon&#x27;],cls:&#x27;ice&#x27;},
+{id:&#x27;thunder&#x27;,n:&#x27;雷鸣峡谷&#x27;,d:&#x27;雷云密布，雷鸣电鳗与天雷龙鱼出没。&#x27;,emoji:&#x27;⚡&#x27;,need:900,rod:6,castCost:20,fish:[&#x27;eel&#x27;,&#x27;puffer&#x27;,&#x27;ray&#x27;,&#x27;thunderdragon&#x27;,&#x27;abyss&#x27;],cls:&#x27;thunder&#x27;},
+{id:&#x27;swamp&#x27;,n:&#x27;剧毒沼泽&#x27;,d:&#x27;瘴气弥漫，毒系鱼群与万毒海龙潜伏于此。&#x27;,emoji:&#x27;☠️&#x27;,need:1500,rod:7,castCost:30,fish:[&#x27;poisonking&#x27;,&#x27;corrodeeel&#x27;,&#x27;scorpion&#x27;,&#x27;poisonhydra&#x27;,&#x27;fogmother&#x27;],cls:&#x27;swamp&#x27;}];
+const species={
+minnow:{n:&#x27;银光小鱼&#x27;,em:&#x27;🐟&#x27;,role:&#x27;敏捷&#x27;,hp:48,atk:10,rar:&#x27;普通&#x27;},
+koi:{n:&#x27;锦鲤&#x27;,em:&#x27;🎏&#x27;,role:&#x27;技巧&#x27;,hp:66,atk:11,rar:&#x27;优秀&#x27;},
+catfish:{n:&#x27;大胡子鲶鱼&#x27;,em:&#x27;🐡&#x27;,role:&#x27;力量&#x27;,hp:92,atk:14,rar:&#x27;优秀&#x27;},
+pike:{n:&#x27;翠刃狗鱼&#x27;,em:&#x27;🐠&#x27;,role:&#x27;力量&#x27;,hp:85,atk:17,rar:&#x27;稀有&#x27;},
+gold:{n:&#x27;黄金金鱼&#x27;,em:&#x27;金🐠&#x27;,role:&#x27;技巧&#x27;,hp:72,atk:15,rar:&#x27;稀有&#x27;},
+moon:{n:&#x27;月影鱼&#x27;,em:&#x27;🌙🐟&#x27;,role:&#x27;敏捷&#x27;,hp:76,atk:18,rar:&#x27;史诗&#x27;,element:&#x27;冰&#x27;},
+turtle:{n:&#x27;碧甲海龟&#x27;,em:&#x27;🐢&#x27;,role:&#x27;力量&#x27;,hp:125,atk:12,rar:&#x27;史诗&#x27;},
+squid:{n:&#x27;墨影乌贼&#x27;,em:&#x27;🦑&#x27;,role:&#x27;技巧&#x27;,hp:82,atk:19,rar:&#x27;史诗&#x27;},
+snake:{n:&#x27;赤纹海蛇&#x27;,em:&#x27;🐍&#x27;,role:&#x27;敏捷&#x27;,hp:78,atk:21,rar:&#x27;史诗&#x27;,element:&#x27;毒&#x27;},
+abyss:{n:&#x27;深渊灯鱼&#x27;,em:&#x27;🐉&#x27;,role:&#x27;技巧&#x27;,hp:110,atk:24,rar:&#x27;传说&#x27;,element:&#x27;雷&#x27;},
+lava:{n:&#x27;熔岩龙鱼&#x27;,em:&#x27;🔥🐟&#x27;,role:&#x27;力量&#x27;,hp:145,atk:25,rar:&#x27;传说&#x27;,element:&#x27;火&#x27;},
+magma:{n:&#x27;赤焰海鳗&#x27;,em:&#x27;🐉&#x27;,role:&#x27;敏捷&#x27;,hp:112,atk:29,rar:&#x27;传说&#x27;,element:&#x27;火&#x27;},
+salamander:{n:&#x27;熔核蜥鱼&#x27;,em:&#x27;🦎&#x27;,role:&#x27;技巧&#x27;,hp:135,atk:26,rar:&#x27;传说&#x27;,element:&#x27;火&#x27;},
+ice:{n:&#x27;霜晶鱼&#x27;,em:&#x27;🧊🐟&#x27;,role:&#x27;技巧&#x27;,hp:130,atk:26,rar:&#x27;传说&#x27;,element:&#x27;冰&#x27;},
+frostturtle:{n:&#x27;极光冰龟&#x27;,em:&#x27;🐢❄️&#x27;,role:&#x27;力量&#x27;,hp:175,atk:24,rar:&#x27;传说&#x27;,element:&#x27;冰&#x27;},
+firekoi:{n:&#x27;炎鳞锦鲤&#x27;,em:&#x27;🎏🔥&#x27;,role:&#x27;技巧&#x27;,hp:80,atk:16,rar:&#x27;史诗&#x27;,element:&#x27;火&#x27;,skill:{name:&#x27;烈焰鳞片&#x27;,type:&#x27;burn&#x27;,cost:2,power:1.5}},
+firesala:{n:&#x27;熔岩鲵&#x27;,em:&#x27;🦎🔥&#x27;,role:&#x27;力量&#x27;,hp:110,atk:18,rar:&#x27;史诗&#x27;,element:&#x27;火&#x27;,skill:{name:&#x27;熔岩吐息&#x27;,type:&#x27;burn_chance&#x27;,cost:3,power:2.0,chance:.5}},
+firepiranha:{n:&#x27;赤焰食人鱼&#x27;,em:&#x27;🐟🔥&#x27;,role:&#x27;敏捷&#x27;,hp:75,atk:19,rar:&#x27;稀有&#x27;,element:&#x27;火&#x27;,skill:{name:&#x27;爆炎撕咬&#x27;,type:&#x27;burn_multi&#x27;,cost:2,power:.9,chance:.3}},
+phoenix:{n:&#x27;不死鸟鱼&#x27;,em:&#x27;🐦🔥&#x27;,role:&#x27;力量&#x27;,hp:130,atk:22,rar:&#x27;传说&#x27;,element:&#x27;火&#x27;,skill:{name:&#x27;涅槃之火&#x27;,type:&#x27;burn_berserk&#x27;,cost:3,power:1.6}},
+icekoi:{n:&#x27;霜晶锦鲤&#x27;,em:&#x27;🎏❄️&#x27;,role:&#x27;技巧&#x27;,hp:85,atk:15,rar:&#x27;史诗&#x27;,element:&#x27;冰&#x27;,skill:{name:&#x27;寒霜吐息&#x27;,type:&#x27;freeze_chance&#x27;,cost:3,power:1.4,chance:.4}},
+iceshark:{n:&#x27;冰牙鲨&#x27;,em:&#x27;🦈❄️&#x27;,role:&#x27;力量&#x27;,hp:115,atk:20,rar:&#x27;史诗&#x27;,element:&#x27;冰&#x27;,skill:{name:&#x27;冰牙冲撞&#x27;,type:&#x27;freeze_drain&#x27;,cost:3,power:1.8,chance:.3}},
+snowjelly:{n:&#x27;雪晶水母&#x27;,em:&#x27;🎐❄️&#x27;,role:&#x27;技巧&#x27;,hp:80,atk:14,rar:&#x27;稀有&#x27;,element:&#x27;冰&#x27;,skill:{name:&#x27;极寒触须&#x27;,type:&#x27;atk_weaken&#x27;,cost:2,power:1.2}},
+icedragon:{n:&#x27;冰霜龙鱼&#x27;,em:&#x27;🐉❄️&#x27;,role:&#x27;敏捷&#x27;,hp:100,atk:23,rar:&#x27;传说&#x27;,element:&#x27;冰&#x27;,skill:{name:&#x27;绝对零度&#x27;,type:&#x27;freeze_strong&#x27;,cost:4,power:1.8,chance:.6}},
+eel:{n:&#x27;雷鸣电鳗&#x27;,em:&#x27;⚡🐍&#x27;,role:&#x27;技巧&#x27;,hp:78,atk:16,rar:&#x27;史诗&#x27;,element:&#x27;雷&#x27;,skill:{name:&#x27;雷电放射&#x27;,type:&#x27;paralyze_chance&#x27;,cost:2,power:1.4,chance:.5}},
+puffer:{n:&#x27;雷光河豚&#x27;,em:&#x27;⚡🐡&#x27;,role:&#x27;力量&#x27;,hp:90,atk:15,rar:&#x27;稀有&#x27;,element:&#x27;雷&#x27;,skill:{name:&#x27;电磁爆发&#x27;,type:&#x27;paralyze_drain&#x27;,cost:2,power:1.3}},
+ray:{n:&#x27;闪电魔鳐&#x27;,em:&#x27;⚡🐟&#x27;,role:&#x27;敏捷&#x27;,hp:85,atk:19,rar:&#x27;史诗&#x27;,element:&#x27;雷&#x27;,skill:{name:&#x27;雷霆俯冲&#x27;,type:&#x27;paralyze_high&#x27;,cost:3,power:2.0,chance:.4}},
+thunderdragon:{n:&#x27;天雷龙鱼&#x27;,em:&#x27;⚡🐉&#x27;,role:&#x27;力量&#x27;,hp:135,atk:24,rar:&#x27;传说&#x27;,element:&#x27;雷&#x27;,skill:{name:&#x27;天雷降临&#x27;,type:&#x27;paralyze_strong&#x27;,cost:4,power:2.2,chance:.7}},
+poisonking:{n:&#x27;深渊毒皇&#x27;,em:&#x27;👑🐉&#x27;,role:&#x27;技巧&#x27;,hp:100,atk:18,rar:&#x27;传说&#x27;,element:&#x27;毒&#x27;,skill:{name:&#x27;深渊剧毒&#x27;,type:&#x27;poison2&#x27;,cost:3,power:1.2}},
+corrodeeel:{n:&#x27;腐蚀魔鳗&#x27;,em:&#x27;🐍☠️&#x27;,role:&#x27;力量&#x27;,hp:105,atk:19,rar:&#x27;史诗&#x27;,element:&#x27;毒&#x27;,skill:{name:&#x27;腐蚀毒牙&#x27;,type:&#x27;poison_weaken&#x27;,cost:3,power:1.6}},
+scorpion:{n:&#x27;毒蝎狮鱼&#x27;,em:&#x27;🦂🐟&#x27;,role:&#x27;敏捷&#x27;,hp:80,atk:17,rar:&#x27;稀有&#x27;,element:&#x27;毒&#x27;,skill:{name:&#x27;毒刺连击&#x27;,type:&#x27;poison_multi&#x27;,cost:2,power:.9}},
+poisonhydra:{n:&#x27;万毒海龙&#x27;,em:&#x27;🐉☠️&#x27;,role:&#x27;力量&#x27;,hp:150,atk:22,rar:&#x27;传说&#x27;,element:&#x27;毒&#x27;,skill:{name:&#x27;万毒领域&#x27;,type:&#x27;poison_extra&#x27;,cost:3,power:1.5}},
+fogmother:{n:&#x27;瘴雾幽母&#x27;,em:&#x27;👻☠️&#x27;,role:&#x27;技巧&#x27;,hp:120,atk:16,rar:&#x27;传说&#x27;,element:&#x27;毒&#x27;,skill:{name:&#x27;死亡瘴雾&#x27;,type:&#x27;poison_fog&#x27;,cost:3,power:1.0}}};
+const bosses=[
+{id:&#x27;pond&#x27;,n:&#x27;池塘巨鲤王&#x27;,em:&#x27;👑🎏&#x27;,role:&#x27;技巧&#x27;,hp:1200,atk:22,ab:{name:&#x27;狂涛冲撞&#x27;,cost:3,type:&#x27;big_hit&#x27;}},
+{id:&#x27;river&#x27;,n:&#x27;怒涛海蛇王&#x27;,em:&#x27;👑🐍&#x27;,role:&#x27;敏捷&#x27;,hp:1500,atk:27,ab:{name:&#x27;毒牙连击&#x27;,cost:3,type:&#x27;hit_poison&#x27;}},
+{id:&#x27;lake&#x27;,n:&#x27;星月巨龟&#x27;,em:&#x27;👑🐢&#x27;,role:&#x27;力量&#x27;,hp:1900,atk:30,ab:{name:&#x27;龟甲壁垒&#x27;,cost:3,type:&#x27;heal_guard&#x27;}},
+{id:&#x27;deep&#x27;,n:&#x27;深渊乌贼王&#x27;,em:&#x27;👑🦑&#x27;,role:&#x27;技巧&#x27;,hp:2400,atk:36,ab:{name:&#x27;墨雾突袭&#x27;,cost:2,type:&#x27;hit_weaken&#x27;}},
+{id:&#x27;lava&#x27;,n:&#x27;熔岩巨龙鱼&#x27;,em:&#x27;👑🔥&#x27;,role:&#x27;力量&#x27;,hp:2900,atk:42,ab:{name:&#x27;力量冲锋&#x27;,cost:3,type:&#x27;big_hit&#x27;}},
+{id:&#x27;ice&#x27;,n:&#x27;冰封古海龟&#x27;,em:&#x27;👑❄️&#x27;,role:&#x27;力量&#x27;,hp:3400,atk:45,element:&#x27;冰&#x27;,ab:{name:&#x27;绝对零度&#x27;,cost:3,type:&#x27;freeze_chance&#x27;,power:1.6,chance:.5}},
+{id:&#x27;thunder&#x27;,n:&#x27;雷霆龙王&#x27;,em:&#x27;👑⚡&#x27;,role:&#x27;力量&#x27;,hp:3800,atk:48,element:&#x27;雷&#x27;,ab:{name:&#x27;天雷降临&#x27;,cost:3,type:&#x27;paralyze_strong&#x27;,power:2.0,chance:.6}},
+{id:&#x27;swamp&#x27;,n:&#x27;万毒海龙&#x27;,em:&#x27;👑☠️&#x27;,role:&#x27;力量&#x27;,hp:4200,atk:50,element:&#x27;毒&#x27;,ab:{name:&#x27;万毒领域&#x27;,cost:3,type:&#x27;poison_extra&#x27;,power:1.6}}];
+/* ============ 稀有度面板倍率 ============ */
+const RARITY_MUL={&#x27;普通&#x27;:1.00,&#x27;优秀&#x27;:1.05,&#x27;稀有&#x27;:1.10,&#x27;史诗&#x27;:1.20,&#x27;传说&#x27;:1.25,&#x27;变异&#x27;:1.40};
+/* ============ 状态系统 ============ */
+const STATUS_META={burn:{icon:&#x27;🔥&#x27;,label:&#x27;灼烧&#x27;,turns:2},freeze:{icon:&#x27;❄️&#x27;,label:&#x27;冰冻&#x27;,turns:1},paralyze:{icon:&#x27;⚡&#x27;,label:&#x27;麻痹&#x27;,turns:2},poison:{icon:&#x27;☠️&#x27;,label:&#x27;中毒&#x27;,turns:0},weaken:{icon:&#x27;💔&#x27;,label:&#x27;虚弱&#x27;,turns:3}};
+function emptyStatus(){return{burn:0,freeze:0,paralyze:0,poison:0,weaken:0,atkDebuff:0}}
+function ensureStatus(f){if(!f.status)f.status=emptyStatus();if(f.status.atkDebuff===undefined)f.status.atkDebuff=0}
+function clearExclusive(f,keep){[&#x27;burn&#x27;,&#x27;freeze&#x27;,&#x27;paralyze&#x27;,&#x27;weaken&#x27;].forEach(s=&gt;{if(s!==keep)f.status[s]=0})}
+function applyStatus(f,name,turns){ensureStatus(f);if(name===&#x27;poison&#x27;){f.status.poison=Math.min(2,f.status.poison+1);return true}if(name===&#x27;burn&#x27;||name===&#x27;freeze&#x27;||name===&#x27;paralyze&#x27;||name===&#x27;weaken&#x27;){clearExclusive(f,name);f.status[name]=Math.max(f.status[name],turns||STATUS_META[name].turns);return true}return false}
+function statusText(f){ensureStatus(f);const out=[];if(f.status.burn&gt;0)out.push(&#x27;🔥灼烧&#x27;+f.status.burn);if(f.status.freeze&gt;0)out.push(&#x27;❄️冰冻&#x27;+f.status.freeze);if(f.status.paralyze&gt;0)out.push(&#x27;⚡麻痹&#x27;+f.status.paralyze);if(f.status.poison&gt;0)out.push(&#x27;☠️中毒×&#x27;+f.status.poison);if(f.status.weaken&gt;0)out.push(&#x27;💔虚弱&#x27;+f.status.weaken);if(f.status.atkDebuff&gt;0)out.push(&#x27;🔻攻-&#x27;+f.status.atkDebuff);return out}
+/* ============ 元素 &amp; 克制 ============ */
+function elementMul(a,b){if(!a||!b)return 1;if(a===&#x27;火&#x27;&amp;&amp;b===&#x27;冰&#x27;)return 1.3;if(a===&#x27;冰&#x27;&amp;&amp;b===&#x27;雷&#x27;)return 1.3;if(a===&#x27;雷&#x27;&amp;&amp;b===&#x27;火&#x27;)return 1.3;if(a===&#x27;冰&#x27;&amp;&amp;b===&#x27;火&#x27;)return .85;if(a===&#x27;雷&#x27;&amp;&amp;b===&#x27;冰&#x27;)return .85;if(a===&#x27;火&#x27;&amp;&amp;b===&#x27;雷&#x27;)return .85;return 1}
+function typeMul(a,b){if((a===&#x27;力量&#x27;&amp;&amp;b===&#x27;技巧&#x27;)||(a===&#x27;技巧&#x27;&amp;&amp;b===&#x27;敏捷&#x27;)||(a===&#x27;敏捷&#x27;&amp;&amp;b===&#x27;力量&#x27;))return 1.35;if((a===&#x27;技巧&#x27;&amp;&amp;b===&#x27;力量&#x27;)||(a===&#x27;敏捷&#x27;&amp;&amp;b===&#x27;技巧&#x27;)||(a===&#x27;力量&#x27;&amp;&amp;b===&#x27;敏捷&#x27;))return .85;return 1}
+function effectiveAtk(f){ensureStatus(f);let a=f.atk;if(f.status.burn&gt;0)a*=.8;a=Math.max(1,a-f.status.atkDebuff);return Math.max(1,Math.round(a))}
+function calcDmg(att,def2,power,guard){ensureStatus(att);ensureStatus(def2);const m1=typeMul(att.role,def2.role);const m2=elementMul(att.element,def2.element);const weak=def2.status.weaken&gt;0?1.2:1;const g=guard?.5:1;const d=Math.max(1,Math.round(effectiveAtk(att)*power*m1*m2*weak*g));def2.hp=Math.max(0,def2.hp-d);return d}
+/* ============ 状态 ============ */
+let S={coins:200,zone:0,rod:1,fish:[],team:[],bait:{worm:99,grain:0,shrimp:0,glow:0,abyss:0,lure:0},feed:2,treasure:0,junk:0,wins:0,unlockedZones:[],arenaWins:{},arenaBest:{},bossWins:{},bossLevels:{},battle:null};
+let castPhase=&#x27;idle&#x27;;let castBait=&#x27;worm&#x27;;let hookType=null;let biteAt=0;let waitTimer=null;let biteTimer=null;let reelAnim=null;let reelPos=0;let reelDir=1;let reelWindow={start:42,width:16};let biteRarity=&#x27;普通&#x27;;
+function load(){try{let raw=localStorage.getItem(&#x27;fishv5&#x27;)||localStorage.getItem(&#x27;fishv4&#x27;)||localStorage.getItem(&#x27;fishv3&#x27;)||localStorage.getItem(&#x27;fishv2&#x27;);if(raw){const old=JSON.parse(raw);S={...S,...old,battle:null}}}catch(e){}
+S.fish.forEach(f=&gt;{if(!f.status)f.status=emptyStatus();if(!f.element&amp;&amp;species[f.id])f.element=species[f.id].element});
+S.bait={worm:99,grain:0,shrimp:0,glow:0,abyss:0,lure:0,...(S.bait||{})};if(!Array.isArray(S.team))S.team=[];
+if(!Array.isArray(S.unlockedZones))S.unlockedZones=[];
+S.arenaWins=S.arenaWins||{};S.arenaBest=S.arenaBest||{};S.bossWins=S.bossWins||{};S.bossLevels=S.bossLevels||{};
+/* 已有存档中此前可进入的基础海域保持开放 */
+[&#x27;pond&#x27;,&#x27;river&#x27;].forEach(id=&gt;{if(!S.unlockedZones.includes(id))S.unlockedZones.push(id)});S.unlockedZones=S.unlockedZones.filter(id=&gt;[&#x27;pond&#x27;,&#x27;river&#x27;,&#x27;lava&#x27;,&#x27;ice&#x27;,&#x27;thunder&#x27;,&#x27;swamp&#x27;].includes(id));
+S.team=S.team.filter(uid=&gt;S.fish.some(f=&gt;f.uid===uid)).slice(0,6);
+if(S.team.length===0&amp;&amp;S.fish.length&gt;0)S.team=S.fish.slice(0,6).map(f=&gt;f.uid);}
+function save(){const x={...S,battle:null};localStorage.setItem(&#x27;fishv5&#x27;,JSON.stringify(x))}
+load();
+/* ============ 工具 ============ */
+function say(t){$(&#x27;log&#x27;).innerHTML=&#x27;&lt;p&gt;› &#x27;+t+&#x27;&lt;/p&gt;&#x27;+$(&#x27;log&#x27;).innerHTML}
+function fsay(t){$(&#x27;fightlog&#x27;).innerHTML=&#x27;&lt;p&gt;› &#x27;+t+&#x27;&lt;/p&gt;&#x27;+$(&#x27;fightlog&#x27;).innerHTML}
+function def(id,rar){const s=species[id];if(!s)return null;const rarity=rar||s.rar;const m=RARITY_MUL[rarity]||1;return{uid:Math.random().toString(36).slice(2,10),id,n:s.n,em:s.em,role:s.role,element:s.element||null,rar:rarity,lv:1,xp:0,max:Math.round(s.hp*m),hp:Math.round(s.hp*m),atk:Math.round(s.atk*m),en:2,size:20+Math.random()*55|0,evo:false,status:emptyStatus(),skill:s.skill||null}}
+function teamFish(){return S.team.map(uid=&gt;S.fish.find(f=&gt;f.uid===uid)).filter(Boolean)}
+function firstTeam(){return teamFish()[0]||null}
+function xpNeed(f){return Math.round(100*Math.pow(1.2,Math.max(0,(f.lv||1)-1)))}
+function fishValue(f){const base={&#x27;普通&#x27;:15,&#x27;优秀&#x27;:30,&#x27;稀有&#x27;:60,&#x27;史诗&#x27;:120,&#x27;传说&#x27;:250,&#x27;变异&#x27;:500}[f.rar]||15;return Math.round(base*(1+(f.lv-1)*.15)*(f.evo?1.5:1)*.5)}
+function inTeam(uid){return S.team.includes(uid)}
+function getAbility(f){const s=species[f.id];if(s&amp;&amp;s.skill)return{name:s.skill.name,cost:s.skill.cost,type:s.skill.type,power:s.skill.power,chance:s.skill.chance};if([&#x27;turtle&#x27;,&#x27;frostturtle&#x27;].includes(f.id))return{name:&#x27;龟甲壁垒&#x27;,cost:3,type:&#x27;heal_guard&#x27;};if(f.id===&#x27;squid&#x27;)return{name:&#x27;墨雾突袭&#x27;,cost:2,type:&#x27;hit_weaken&#x27;};if(f.id===&#x27;snake&#x27;)return{name:&#x27;毒牙连击&#x27;,cost:3,type:&#x27;hit_poison&#x27;};if(f.role===&#x27;力量&#x27;)return{name:&#x27;力量冲锋&#x27;,cost:3,type:&#x27;big_hit&#x27;};if(f.role===&#x27;技巧&#x27;)return{name:&#x27;连环击&#x27;,cost:2,type:&#x27;double_hit&#x27;};return{name:&#x27;疾影斩&#x27;,cost:2,type:&#x27;hit_drain&#x27;}}
+function showRarity(rar){const e=document.createElement(&#x27;div&#x27;);e.className=&#x27;rar-banner&#x27;;e.textContent=rar===&#x27;变异&#x27;?&#x27;🌈✨&#x27;:rar===&#x27;传说&#x27;?&#x27;👑✨&#x27;:&#x27;✦&#x27;;document.body.append(e);setTimeout(()=&gt;e.remove(),850);SFX.rare()}
+function flash(id,cls){const el=$(id);if(!el)return;el.classList.remove(&#x27;attack&#x27;,&#x27;damage&#x27;);void el.offsetWidth;el.classList.add(cls)}
+/* ============ 钓鱼 QTE ============ */
+function resetCast(){if(waitTimer){clearTimeout(waitTimer);waitTimer=null}if(biteTimer){clearTimeout(biteTimer);biteTimer=null}castPhase=&#x27;idle&#x27;;hookType=null;if(reelAnim){clearInterval(reelAnim);reelAnim=null}const ch=$(&#x27;reelChallenge&#x27;);if(ch)ch.classList.add(&#x27;hide&#x27;);const c=$(&#x27;cast&#x27;),r=$(&#x27;reel&#x27;);if(c)c.disabled=false;if(r){r.disabled=true;r.classList.remove(&#x27;biting&#x27;)}const st=$(&#x27;status&#x27;);if(st)st.style.color=&#x27;&#x27;;const sw=$(&#x27;swim&#x27;);if(sw&amp;&amp;zone)sw.textContent=zone().emoji}
+function startCast(){const bait=$(&#x27;bait&#x27;).value;castBait=bait;const fee=zone().castCost||0;if(S.coins&lt;fee){$(&#x27;status&#x27;).textContent=`金币不足！本海域每次垂钓需要 ${fee} 金币。`;return}if(bait!==&#x27;worm&#x27;&amp;&amp;S.bait[bait]&lt;=0){$(&#x27;status&#x27;).textContent=&#x27;鱼饵不足，请去商店购买。&#x27;;return}
+if(bait!==&#x27;worm&#x27;)S.bait[bait]--;if(fee&gt;0){S.coins-=fee;say(`垂钓消耗 ${fee} 金币。`);save();}
+castPhase=&#x27;waiting&#x27;;hookType=null;$(&#x27;cast&#x27;).disabled=true;$(&#x27;reel&#x27;).disabled=false;$(&#x27;status&#x27;).textContent=&#x27;鱼钩沉入水中……等待咬钩&#x27;;$(&#x27;status&#x27;).style.color=&#x27;&#x27;;$(&#x27;swim&#x27;).textContent=zone().emoji;SFX.cast();
+waitTimer=setTimeout(()=&gt;{waitTimer=null;const r=Math.random();if(r&lt;0.10){castPhase=&#x27;idle&#x27;;$(&#x27;status&#x27;).textContent=&#x27;鱼钩沉入水中……没有动静。&#x27;;$(&#x27;cast&#x27;).disabled=false;$(&#x27;reel&#x27;).disabled=true;save();return}
+if(r&lt;0.55){hookType=&#x27;fish&#x27;}else{hookType=&#x27;item&#x27;}
+startBite()},1500+Math.random()*2500)}
+function rollRarity(useLure){const entries=[[&#x27;变异&#x27;,.008],[&#x27;传说&#x27;,.037],[&#x27;史诗&#x27;,.105],[&#x27;稀有&#x27;,.23],[&#x27;优秀&#x27;,.32],[&#x27;普通&#x27;,.30]];const weighted=entries.map(([name,w])=&gt;[name,w*(useLure&amp;&amp;[&#x27;传说&#x27;,&#x27;史诗&#x27;,&#x27;稀有&#x27;].includes(name)?2:1)]);let r=Math.random()*weighted.reduce((s,x)=&gt;s+x[1],0);for(const [name,w] of weighted){r-=w;if(r&lt;=0)return name}return &#x27;普通&#x27;}
+function startBite(){castPhase=&#x27;biting&#x27;;biteAt=Date.now();if(hookType===&#x27;fish&#x27;){biteRarity=rollRarity(castBait===&#x27;lure&#x27;);}else biteRarity=&#x27;普通&#x27;;const widths={&#x27;普通&#x27;:28,&#x27;优秀&#x27;:22,&#x27;稀有&#x27;:16,&#x27;史诗&#x27;:11,&#x27;传说&#x27;:7,&#x27;变异&#x27;:4};reelWindow.width=widths[biteRarity]||28;reelWindow.start=8+Math.random()*(84-reelWindow.width);$(&#x27;reelTarget&#x27;).style.left=reelWindow.start+&#x27;%&#x27;;$(&#x27;reelTarget&#x27;).style.width=reelWindow.width+&#x27;%&#x27;;$(&#x27;reelMarker&#x27;).style.left=&#x27;0%&#x27;;$(&#x27;reelDifficulty&#x27;).textContent=`目标：${biteRarity} · 命中区间 ${reelWindow.width}%（稀有度越高越难）`;$(&#x27;reelChallenge&#x27;).classList.remove(&#x27;hide&#x27;);reelPos=0;reelDir=1;reelAnim=setInterval(()=&gt;{reelPos+=reelDir*1.8;if(reelPos&gt;=96){reelPos=96;reelDir=-1}if(reelPos&lt;=0){reelPos=0;reelDir=1}$(&#x27;reelMarker&#x27;).style.left=reelPos+&#x27;%&#x27;},24);$(&#x27;status&#x27;).textContent=&#x27;❗ 咬钩了！观察指针进入绿色区域时收竿！&#x27;;$(&#x27;status&#x27;).style.color=&#x27;#c95858&#x27;;$(&#x27;reel&#x27;).classList.add(&#x27;biting&#x27;);$(&#x27;swim&#x27;).textContent=&#x27;❗&#x27;;SFX.bite();
+biteTimer=setTimeout(()=&gt;{biteTimer=null;if(reelAnim){clearInterval(reelAnim);reelAnim=null}$(&#x27;reelChallenge&#x27;).classList.add(&#x27;hide&#x27;);castPhase=&#x27;idle&#x27;;hookType=null;$(&#x27;status&#x27;).textContent=&#x27;💨 鱼儿挣脱了……什么都没钓到。&#x27;;$(&#x27;status&#x27;).style.color=&#x27;&#x27;;$(&#x27;reel&#x27;).classList.remove(&#x27;biting&#x27;);$(&#x27;cast&#x27;).disabled=false;$(&#x27;reel&#x27;).disabled=true;$(&#x27;swim&#x27;).textContent=zone().emoji;say(&#x27;错过咬钩时机，鱼饵被吃掉了。&#x27;);SFX.reel();save()},1500)}
+function catchFish(perfect){const rar=biteRarity;
+const pool=zone().fish;const id=pool[Math.random()*pool.length|0];const f=def(id,rar);f.size+=rar===&#x27;变异&#x27;?45:rar===&#x27;传说&#x27;?25:0;S.fish.push(f);
+let msg=`钓到${rar}${f.n}，体长${f.size}cm！`+(perfect?&#x27; ✨ 完美收竿&#x27;:&#x27;&#x27;);say(msg);$(&#x27;status&#x27;).textContent=msg;if([&#x27;史诗&#x27;,&#x27;传说&#x27;,&#x27;变异&#x27;].includes(rar))showRarity(rar);else SFX.catchFish();if(S.team.length===0)S.team.push(f.uid);render()}
+function catchItem(perfect){const bait=$(&#x27;bait&#x27;).value;const baitChance={worm:0,grain:.02,shrimp:.04,glow:.08,abyss:.15};const tChance=baitChance[bait]||0;let msg;
+if(Math.random()&lt;tChance){const n=1;S.treasure+=n;msg=`拉上来 ${n} 个宝物！`+(perfect?&#x27; ✨ 完美收竿&#x27;:&#x27;&#x27;);SFX.rare()}
+else{const n=(perfect?2:1)+(Math.random()&lt;0.5?1:0);S.junk+=n;msg=`拉上来 ${n} 个杂物（可出售换金币）。`+(perfect?&#x27; ✨ 完美收竿&#x27;:&#x27;&#x27;);SFX.reel()}
+say(msg);$(&#x27;status&#x27;).textContent=msg;render()}
+/* ============ 渲染 ============ */
+function zone(){return zones[S.zone]}
+function showtab(t){if(t!==&#x27;fish&#x27;)resetCast();[&#x27;fish&#x27;,&#x27;book&#x27;,&#x27;team&#x27;,&#x27;storage&#x27;,&#x27;train&#x27;,&#x27;arena&#x27;,&#x27;boss&#x27;,&#x27;shop&#x27;,&#x27;bag&#x27;].forEach(x=&gt;$(&#x27;p-&#x27;+x).classList.toggle(&#x27;hide&#x27;,x!==t));$(&#x27;fight&#x27;).classList.add(&#x27;hide&#x27;);document.querySelectorAll(&#x27;#tabs button&#x27;).forEach(b=&gt;b.classList.toggle(&#x27;on&#x27;,b.dataset.t===t));render()}
+document.querySelectorAll(&#x27;#tabs button&#x27;).forEach(b=&gt;b.onclick=()=&gt;showtab(b.dataset.t));
+function render(){
+$(&#x27;coins&#x27;).textContent=S.coins;
+const z=zone();
+$(&#x27;zones&#x27;).innerHTML=&#x27;&#x27;;
+zones.forEach((v,i)=&gt;{const b=document.createElement(&#x27;button&#x27;);const advanced=![&#x27;pond&#x27;,&#x27;river&#x27;].includes(v.id);const unlocked=!advanced||S.unlockedZones.includes(v.id);const ok=unlocked;b.textContent=(!unlocked?&#x27;🔒 &#x27;:&#x27;&#x27;)+v.emoji+v.n+(v.castCost?` · ${v.castCost}G/竿`:&#x27;&#x27;);b.className=i===S.zone?&#x27;on&#x27;:&#x27;&#x27;;b.onclick=()=&gt;{if(!unlocked){if(S.coins&lt;v.need){say(`金币不足！首次解锁${v.n}需要 ${v.need} 金币。`);return}if(S.rod&lt;v.rod){say(`${v.n}还需要鱼竿达到 Lv.${v.rod}，当前为 Lv.${S.rod}。`);return}S.coins-=v.need;S.unlockedZones.push(v.id);save();say(`已支付 ${v.need} 金币并满足鱼竿Lv.${v.rod}要求，永久解锁${v.n}！`)}resetCast();S.zone=i;render();say(&#x27;抵达&#x27;+v.n)};$(&#x27;zones&#x27;).append(b)});
+$(&#x27;zname&#x27;).textContent=z.n;$(&#x27;zdesc&#x27;).textContent=z.d+(z.castCost?` 每次垂钓消耗 ${z.castCost} 金币。`:&#x27;&#x27;);$(&#x27;water&#x27;).className=&#x27;water &#x27;+z.cls;if(castPhase===&#x27;idle&#x27;)$(&#x27;swim&#x27;).textContent=z.emoji;
+const t=teamFish();
+$(&#x27;teampreview&#x27;).innerHTML=t.map(f=&gt;`&lt;div class=&quot;fish&quot;&gt;&lt;div class=&quot;em&quot;&gt;${f.em}&lt;/div&gt;&lt;b&gt;${f.n}&lt;/b&gt;&lt;small&gt;Lv.${f.lv} · HP ${f.hp}/${f.max}&lt;/small&gt;&lt;/div&gt;`).join(&#x27;&#x27;)||&#x27;&lt;p class=&quot;muted&quot;&gt;队伍是空的。&lt;/p&gt;&#x27;;
+const a=firstTeam();
+$(&#x27;active&#x27;).innerHTML=a?`${a.em} &lt;b&gt;${a.n}&lt;/b&gt;&lt;br&gt;Lv.${a.lv} · ${a.rar} · ${a.role}型${a.element?&#x27; · &#x27;+a.element:&#x27;&#x27;}&lt;br&gt;HP ${a.hp}/${a.max} · 攻击 ${a.atk} · 能量 ${a.en}/5`:&#x27;尚未捕获鱼类。&#x27;;
+$(&#x27;book&#x27;).innerHTML=S.fish.map(f=&gt;`&lt;div class=&quot;fish&quot; onclick=&quot;selFish(&#x27;${f.uid}&#x27;)&quot;&gt;&lt;div class=&quot;em&quot;&gt;${f.em}&lt;/div&gt;&lt;b&gt;${f.n}&lt;/b&gt;&lt;small&gt;Lv.${f.lv} · ${f.size}cm · ${fishValue(f)}G&lt;/small&gt;&lt;span class=&quot;rarity ${f.rar===&#x27;传说&#x27;?&#x27;legend&#x27;:f.rar===&#x27;变异&#x27;?&#x27;mutant&#x27;:f.rar===&#x27;史诗&#x27;?&#x27;epic&#x27;:&#x27;&#x27;}&quot;&gt;${f.rar}${f.element?&#x27; · &#x27;+f.element:&#x27;&#x27;}${f.evo?&#x27; · 进化&#x27;:&#x27;&#x27;}${inTeam(f.uid)?&#x27; · 队伍&#x27;:&#x27;&#x27;}&lt;/span&gt;&lt;/div&gt;`).join(&#x27;&#x27;)||&#x27;&lt;p class=&quot;muted&quot;&gt;图鉴是空的。&lt;/p&gt;&#x27;;
+const slots=Array.from({length:6},(_,i)=&gt;S.team[i]||null);
+$(&#x27;teamSlots&#x27;).innerHTML=slots.map((uid,i)=&gt;{const f=uid?S.fish.find(x=&gt;x.uid===uid):null;if(!f)return`&lt;div class=&quot;team-slot&quot;&gt;&lt;span class=&quot;em&quot;&gt;＋&lt;/span&gt;&lt;small&gt;空位&lt;/small&gt;&lt;/div&gt;`;const pct=Math.max(0,Math.round(f.hp/f.max*100));return`&lt;div class=&quot;team-slot filled&quot; onclick=&quot;removeTeam(${i})&quot;&gt;&lt;span class=&quot;em&quot;&gt;${f.em}&lt;/span&gt;&lt;b style=&quot;font-size:10px&quot;&gt;${f.n}&lt;/b&gt;&lt;small&gt;Lv.${f.lv}&lt;/small&gt;&lt;div class=&quot;hp&quot;&gt;&lt;i style=&quot;width:${pct}%&quot;&gt;&lt;/i&gt;&lt;/div&gt;&lt;/div&gt;`}).join(&#x27;&#x27;);
+$(&#x27;warehouse&#x27;).innerHTML=S.fish.filter(f=&gt;!inTeam(f.uid)).map(f=&gt;`&lt;button class=&quot;fish&quot; onclick=&quot;addTeam(&#x27;${f.uid}&#x27;)&quot;&gt;&lt;div class=&quot;em&quot;&gt;${f.em}&lt;/div&gt;&lt;b&gt;${f.n}&lt;/b&gt;&lt;small&gt;Lv.${f.lv} · ${f.role}型${f.element?&#x27; · &#x27;+f.element:&#x27;&#x27;}&lt;/small&gt;&lt;/button&gt;`).join(&#x27;&#x27;)||&#x27;&lt;p class=&quot;muted&quot;&gt;仓库为空。&lt;/p&gt;&#x27;;
+renderStorage();
+const sel=S.selFish?S.fish.find(f=&gt;f.uid===S.selFish):a;
+$(&#x27;traininfo&#x27;).innerHTML=sel?`${sel.em} &lt;b&gt;${sel.n}&lt;/b&gt;&lt;br&gt;Lv.${sel.lv} · 经验 ${sel.xp}/${xpNeed(sel)}&lt;br&gt;生命 ${sel.max} · 攻击 ${sel.atk}&lt;br&gt;稀有度 ${sel.rar}${sel.element?&#x27; · 元素 &#x27;+sel.element:&#x27;&#x27;} · 进化 ${sel.evo?&#x27;已进化&#x27;:&#x27;未进化&#x27;}&lt;br&gt;出售价值 &lt;b&gt;${fishValue(sel)}G&lt;/b&gt;${inTeam(sel.uid)?&#x27; · 在队伍中&#x27;:&#x27;&#x27;}`:&#x27;选择一条鱼。&#x27;;
+const arenaId=zone().id;const arenaStreak=S.arenaWins[arenaId]||0;const arenaBest=S.arenaBest[arenaId]||0;
+$(&#x27;arenaInfo&#x27;).textContent=`${zone().emoji}${zone().n}竞技场 · 当前连胜 ${arenaStreak} · 历史最高 ${arenaBest} · 对手等级 ${arenaStreak+1} · 队伍 ${teamFish().filter(f=&gt;f.hp&gt;0).length}/${S.team.length} 存活`;
+const boss=bosses[S.zone];const bossLv=(S.bossLevels[boss.id]||0)+1;const bossScale=1+(bossLv-1)*.18;
+$(&#x27;bossInfo&#x27;).innerHTML=`&lt;div style=&quot;font-size:42px&quot;&gt;${boss.em}&lt;/div&gt;&lt;b&gt;${boss.n} · Lv.${bossLv}&lt;/b&gt;&lt;p&gt;HP ${Math.round(boss.hp*bossScale)} · 攻击 ${Math.round(boss.atk*(1+(bossLv-1)*.12))} · ${boss.role}型${boss.element?&#x27; · &#x27;+boss.element:&#x27;&#x27;}&lt;/p&gt;&lt;p class=&quot;muted&quot;&gt;本海域累计胜利 ${S.bossWins[boss.id]||0} 次 · 专属技能：${boss.ab.name}&lt;/p&gt;`;
+$(&#x27;shop&#x27;).innerHTML=[[&#x27;grain&#x27;,&#x27;谷物鱼饵&#x27;,15,&#x27;提高优秀鱼出现率 · 2%宝物&#x27;],[&#x27;shrimp&#x27;,&#x27;虾肉鱼饵&#x27;,25,&#x27;更易吸引稀有鱼 · 4%宝物&#x27;],[&#x27;glow&#x27;,&#x27;荧光鱼饵&#x27;,35,&#x27;提升史诗鱼出现率 · 8%宝物&#x27;],[&#x27;abyss&#x27;,&#x27;深渊诱饵&#x27;,50,&#x27;深海专用 · 15%宝物&#x27;],[&#x27;lure&#x27;,&#x27;🎯 诱敌饵料&#x27;,30,&#x27;稀有/史诗/传说概率翻倍；成功钓起鱼必触发遭遇战（每次购买1个）&#x27;],[&#x27;rod&#x27;,&#x27;强化鱼竿&#x27;,120,&#x27;提高可进入水域等级&#x27;],[&#x27;feed&#x27;,&#x27;育成道具&#x27;,100,&#x27;喂食后增加100经验&#x27;]].map(v=&gt;`&lt;div&gt;&lt;b&gt;${v[1]}&lt;/b&gt;&lt;p class=&quot;muted&quot;&gt;${v[3]}&lt;/p&gt;&lt;button onclick=&quot;buy(&#x27;${v[0]}&#x27;,${v[2]})&quot;&gt;购买 ${v[2]}G&lt;/button&gt;&lt;/div&gt;`).join(&#x27;&#x27;);
+$(&#x27;bag&#x27;).innerHTML=`育成道具 ×${S.feed}　诱敌饵料 ×${(S.bait.lure||0)}　宝物 ×${S.treasure}　杂物 ×${S.junk}&lt;p class=&quot;muted&quot;&gt;野怪掉落杂物，鱼王掉落宝物+杂物。宝物也可以出售给商店。&lt;/p&gt;`;
+save()}
+function renderStorage(){const all=S.fish.slice().sort((a,b)=&gt;{const inA=inTeam(a.uid)?0:1;const inB=inTeam(b.uid)?0:1;if(inA!==inB)return inA-inB;const order={&#x27;变异&#x27;:0,&#x27;传说&#x27;:1,&#x27;史诗&#x27;:2,&#x27;稀有&#x27;:3,&#x27;优秀&#x27;:4,&#x27;普通&#x27;:5};return (order[a.rar]||9)-(order[b.rar]||9)});
+$(&#x27;storageList&#x27;).innerHTML=all.map(f=&gt;{const inT=inTeam(f.uid);const st=statusText(f);const stHtml=st.length?`&lt;div class=&quot;status-icons&quot; style=&quot;justify-content:flex-start&quot;&gt;${st.map(s=&gt;`&lt;span&gt;${s}&lt;/span&gt;`).join(&#x27;&#x27;)}&lt;/div&gt;`:&#x27;&#x27;;
+return `&lt;div class=&quot;storage-item&quot;&gt;&lt;div class=&quot;row1&quot;&gt;&lt;span style=&quot;font-size:42px&quot;&gt;${f.em}&lt;/span&gt;&lt;div&gt;&lt;b&gt;${f.n}&lt;/b&gt; ${inT?&#x27;&lt;span style=&quot;color:#147fa7;font-size:12px&quot;&gt;（队伍）&lt;/span&gt;&#x27;:&#x27;&#x27;}&lt;div class=&quot;stats&quot;&gt;Lv.${f.lv} · ${f.rar}${f.element?&#x27; · &#x27;+f.element+&#x27;系&#x27;:&#x27;&#x27;} · ${f.role}型 · ${f.size}cm${f.evo?&#x27; · 已进化&#x27;:&#x27;&#x27;}&lt;/div&gt;&lt;div class=&quot;stats&quot;&gt;HP &lt;b&gt;${f.hp}/${f.max}&lt;/b&gt; · 攻击 &lt;b&gt;${f.atk}&lt;/b&gt; · 能量 &lt;b&gt;${f.en}/5&lt;/b&gt; · 售价 &lt;b&gt;${fishValue(f)}G&lt;/b&gt;&lt;/div&gt;${stHtml}&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;row2&quot;&gt;${inT?`&lt;button class=&quot;alt&quot; disabled title=&quot;先从出战队伍中移出&quot;&gt;队伍中不可出售&lt;/button&gt;`:`&lt;button class=&quot;red&quot; onclick=&quot;sellFish(&#x27;${f.uid}&#x27;)&quot;&gt;出售 ${fishValue(f)}G&lt;/button&gt;`}&lt;/div&gt;&lt;/div&gt;`}).join(&#x27;&#x27;)||&#x27;&lt;p class=&quot;muted&quot;&gt;仓库为空，先去钓鱼吧。&lt;/p&gt;&#x27;}
+window.selFish=function(uid){S.selFish=uid;render()};
+window.addTeam=function(uid){if(S.team.length&gt;=6)return say(&#x27;队伍已满，先移出一条鱼。&#x27;);if(inTeam(uid))return;S.team.push(uid);render();say(&#x27;已加入队伍。&#x27;)};
+window.removeTeam=function(i){const uid=S.team[i];if(!uid)return;S.team.splice(i,1);render();say(&#x27;已移出队伍。&#x27;)};
+window.sellFish=function(uid){const f=S.fish.find(x=&gt;x.uid===uid);if(!f)return;if(inTeam(uid))return say(&#x27;队伍中的鱼需要先移出队伍。&#x27;);const v=fishValue(f);if(!confirm(`确定出售「${f.n}」？获得 ${v} 金币。`))return;S.fish=S.fish.filter(x=&gt;x.uid!==uid);S.coins+=v;if(S.selFish===uid)S.selFish=null;render();say(`已出售 ${f.n}，获得 ${v} 金币。`)};
+/* ============ 商店 / 背包 ============ */
+function buy(id,p){if(S.coins&lt;p)return say(&#x27;金币不足。&#x27;);S.coins-=p;if(id===&#x27;rod&#x27;)S.rod++;else if(id===&#x27;feed&#x27;)S.feed++;else if(id===&#x27;lure&#x27;)S.bait.lure++;else S.bait[id]+=3;say(&#x27;购买成功！&#x27;);render()}
+$(&#x27;selltreasure&#x27;).onclick=()=&gt;{if(!S.treasure)return say(&#x27;没有宝物。&#x27;);S.coins+=S.treasure*120;S.treasure=0;render();say(&#x27;宝物已出售。&#x27;)};
+$(&#x27;selljunk&#x27;).onclick=()=&gt;{if(!S.junk)return say(&#x27;没有杂物。&#x27;);S.coins+=S.junk*2;S.junk=0;render();say(&#x27;杂物已出售。&#x27;)};
+$(&#x27;rest&#x27;).onclick=()=&gt;{S.fish.forEach(f=&gt;{f.hp=f.max;f.en=2;f.status=emptyStatus()});render();say(&#x27;全队已休整（状态已清除）。&#x27;)};
+/* ============ 钓鱼按钮 ============ */
+$(&#x27;cast&#x27;).onclick=()=&gt;{if(castPhase!==&#x27;idle&#x27;)return;startCast()};
+$(&#x27;reel&#x27;).onclick=()=&gt;{
+if(castPhase===&#x27;waiting&#x27;){resetCast();$(&#x27;status&#x27;).textContent=&#x27;⚠️ 太早了！鱼被吓跑了。&#x27;;say(&#x27;过早收竿，鱼饵被吃掉了。&#x27;);return}
+if(castPhase!==&#x27;biting&#x27;)return;
+clearTimeout(biteTimer);biteTimer=null;
+const elapsed=Date.now()-biteAt;const marker=reelPos;const perfect=marker&gt;=reelWindow.start&amp;&amp;marker&lt;=reelWindow.start+reelWindow.width;const ht=hookType;if(reelAnim){clearInterval(reelAnim);reelAnim=null}
+castPhase=&#x27;idle&#x27;;hookType=null;$(&#x27;reelChallenge&#x27;).classList.add(&#x27;hide&#x27;);$(&#x27;reel&#x27;).classList.remove(&#x27;biting&#x27;);$(&#x27;status&#x27;).style.color=&#x27;&#x27;;$(&#x27;cast&#x27;).disabled=false;$(&#x27;reel&#x27;).disabled=true;
+if(ht===&#x27;fish&#x27;){
+catchFish(perfect);
+if(castBait===&#x27;lure&#x27;){const f=firstTeam();if(f&amp;&amp;f.hp&gt;0){const id=zone().fish[Math.random()*zone().fish.length|0];const e=def(id);e.n=&#x27;野生·&#x27;+e.n;say(&#x27;🎯 诱敌饵料生效！成功钓鱼后必定触发遭遇战！&#x27;);startBattle(e,&#x27;wild&#x27;)}}
+else if(Math.random()&lt;0.25){const f=firstTeam();if(f&amp;&amp;f.hp&gt;0){const id=zone().fish[Math.random()*zone().fish.length|0];const e=def(id);e.n=&#x27;野生·&#x27;+e.n;startBattle(e,&#x27;wild&#x27;)}}
+}else catchItem(perfect)};
+/* ============ 育成 / 进化（出售已移到仓库） ============ */
+$(&#x27;feed&#x27;).onclick=()=&gt;{const f=S.selFish?S.fish.find(x=&gt;x.uid===S.selFish):firstTeam();if(!f||!S.feed)return say(&#x27;没有鱼或育成道具不足。&#x27;);S.feed--;f.xp+=100;let leveled=0;while(f.xp&gt;=xpNeed(f)){f.xp-=xpNeed(f);f.lv++;f.max+=9;f.hp=f.max;f.atk+=2;leveled++}if(leveled)say(f.n+&#x27;升级了&#x27;+leveled+&#x27;级！&#x27;);render()};
+$(&#x27;evolve&#x27;).onclick=()=&gt;{const f=S.selFish?S.fish.find(x=&gt;x.uid===S.selFish):firstTeam();if(!f)return;if(f.evo||f.lv&lt;5||!S.treasure)return say(&#x27;进化需要Lv.5并消耗1个宝物。&#x27;);S.treasure--;f.evo=true;f.n=&#x27;进化·&#x27;+f.n;f.max=Math.round(f.max*1.3);f.hp=f.max;f.atk=Math.round(f.atk*1.3);render();say(f.n+&#x27;完成进化！&#x27;)};
+/* ============ 战斗系统 ============ */
+function pFish(){const b=S.battle;return b?b.playerTeam[b.playerIdx]:null}
+function eFish(){const b=S.battle;return b?b.enemyTeam[b.enemyIdx]:null}
+function renderTeamBar(id,team,idx){const el=$(id);if(!el)return;if(!team||team.length&lt;=1){el.innerHTML=&#x27;&#x27;;return}el.innerHTML=team.map((f,i)=&gt;{const pct=Math.max(0,Math.round(f.hp/f.max*100));return`&lt;span class=&quot;tb-slot ${i===idx?&#x27;active&#x27;:&#x27;&#x27;} ${f.hp&lt;=0?&#x27;dead&#x27;:&#x27;&#x27;}&quot;&gt;${f.em} ${pct}%&lt;/span&gt;`}).join(&#x27;&#x27;)}
+function renderStatus(id,f){const el=$(id);if(!el)return;const arr=statusText(f);el.innerHTML=arr.map(s=&gt;`&lt;span&gt;${s}&lt;/span&gt;`).join(&#x27;&#x27;)}
+function startBattle(enemy,mode,enemyTeam){
+const tf=teamFish();
+if(tf.length===0)return say(&#x27;队伍里没有鱼。&#x27;);
+if(mode===&#x27;wild&#x27;){const f=tf[0];if(!f||f.hp&lt;=0)return say(&#x27;出战鱼需要休整。&#x27;)}
+const et=mode===&#x27;arena&#x27;?enemyTeam:[enemy];
+tf.forEach(f=&gt;ensureStatus(f));et.forEach(f=&gt;ensureStatus(f));
+S.battle={mode,playerTeam:tf,playerIdx:Math.max(0,tf.findIndex(f=&gt;f.hp&gt;0)),enemyTeam:et,enemyIdx:0,guard:false,turnUsed:false,switchShield:false,done:false};
+[&#x27;fish&#x27;,&#x27;book&#x27;,&#x27;team&#x27;,&#x27;storage&#x27;,&#x27;train&#x27;,&#x27;arena&#x27;,&#x27;boss&#x27;,&#x27;shop&#x27;,&#x27;bag&#x27;].forEach(x=&gt;$(&#x27;p-&#x27;+x).classList.add(&#x27;hide&#x27;));
+$(&#x27;fight&#x27;).classList.remove(&#x27;hide&#x27;);
+$(&#x27;fighttitle&#x27;).textContent=mode===&#x27;boss&#x27;?&#x27;👑 巨型鱼王战&#x27;:mode===&#x27;arena&#x27;?&#x27;🏟️ 斗鱼竞技场&#x27;:&#x27;⚔️ 遭遇战&#x27;;
+$(&#x27;battleTitle&#x27;).textContent=mode===&#x27;boss&#x27;?&#x27;巨型鱼王现身！&#x27;:mode===&#x27;arena&#x27;?&#x27;竞技场开战！&#x27;:&#x27;野生对手出现！&#x27;;
+$(&#x27;fightlog&#x27;).innerHTML=&#x27;&#x27;;$(&#x27;fightmsg&#x27;).textContent=&#x27;&#x27;;
+fsay(`${pFish().n}迎战${eFish().n}！`);drawFight();
+$(&#x27;fight&#x27;).scrollIntoView({behavior:&#x27;smooth&#x27;})}
+function drawFight(){const b=S.battle;if(!b)return;
+[[&#x27;a&#x27;,pFish()],[&#x27;e&#x27;,eFish()]].forEach(([k,f])=&gt;{if(!f)return;
+$(k+&#x27;sprite&#x27;).textContent=f.em;$(k+&#x27;name&#x27;).textContent=f.n;$(k+&#x27;type&#x27;).textContent=f.role+&#x27;型&#x27;+(f.element?&#x27; · &#x27;+f.element:&#x27;&#x27;);
+$(k+&#x27;hp&#x27;).style.width=Math.max(0,f.hp/f.max*100)+&#x27;%&#x27;;
+$(k+&#x27;hp&#x27;).parentNode.nextElementSibling.textContent=`HP ${Math.max(0,f.hp)}/${f.max}`;
+$(k+&#x27;en&#x27;).style.width=f.en/5*100+&#x27;%&#x27;;
+$(k+&#x27;en&#x27;).parentNode.nextElementSibling.textContent=`能量 ${f.en}/5`;
+renderStatus(k+&#x27;status&#x27;,f)});
+renderTeamBar(&#x27;enemyTeamBar&#x27;,b.enemyTeam,b.enemyIdx);
+renderTeamBar(&#x27;playerTeamBar&#x27;,b.playerTeam,b.playerIdx);
+const p=pFish();const ab=getAbility(p);const busy=b.done;
+$(&#x27;atkL&#x27;).disabled=busy||p.en&lt;1;$(&#x27;atkH&#x27;).disabled=busy||p.en&lt;3;
+$(&#x27;wait&#x27;).disabled=busy||(p.en&gt;=5&amp;&amp;p.hp&gt;=p.max);$(&#x27;guard&#x27;).disabled=busy||p.en&gt;=5;
+$(&#x27;unique&#x27;).disabled=busy||p.en&lt;ab.cost;
+$(&#x27;unique&#x27;).innerHTML=`${ab.name}&lt;small&gt;消耗${ab.cost}能量&lt;/small&gt;`;
+$(&#x27;capture&#x27;).disabled=busy||b.mode===&#x27;boss&#x27;;
+$(&#x27;switchBtn&#x27;).disabled=busy||b.mode===&#x27;wild&#x27;||b.turnUsed}
+function doStatusTick(f){ensureStatus(f);let total=0;const parts=[];
+if(f.status.burn&gt;0){const d=Math.round(f.max*.04);total+=d;parts.push(&#x27;灼烧&#x27;+d);f.status.burn--}
+if(f.status.poison&gt;0){const d=Math.round(f.max*.04*f.status.poison);total+=d;parts.push(&#x27;中毒&#x27;+d);}
+if(f.status.weaken&gt;0)f.status.weaken--;
+if(f.status.paralyze&gt;0)f.status.paralyze--;
+if(f.status.atkDebuff&gt;0)f.status.atkDebuff=0;
+f.hp=Math.max(0,f.hp-total);
+return{total,parts}}
+function playerAction(type){
+const b=S.battle;if(!b||b.done||b.turnUsed)return;
+const p=pFish(),e=eFish();if(!p||!e||p.hp&lt;=0||e.hp&lt;=0)return;
+const ab=getAbility(p);const costs={light:1,heavy:3,rest:0,guard:0,unique:ab.cost};const cost=costs[type]||0;
+if(p.en&lt;cost)return fsay(&#x27;能量不足！&#x27;);p.en-=cost;
+if(type===&#x27;light&#x27;){const d=calcDmg(p,e,1.3,false);fsay(`${p.n}轻攻击，造成${d}伤害。`);SFX.atkL();flash(&#x27;esprite&#x27;,&#x27;damage&#x27;)}
+else if(type===&#x27;heavy&#x27;){const d=calcDmg(p,e,2.2,false);fsay(`${p.n}重攻击，造成${d}伤害！`);SFX.atkH();flash(&#x27;esprite&#x27;,&#x27;damage&#x27;)}
+else if(type===&#x27;rest&#x27;){p.en=Math.min(5,p.en+2);const heal=Math.round(p.max*.1);p.hp=Math.min(p.max,p.hp+heal);fsay(`${p.n}休整：恢复${heal}血，能量+2。`);SFX.heal()}
+else if(type===&#x27;guard&#x27;){p.en=Math.min(5,p.en+1);b.guard=true;fsay(`${p.n}防御，减伤50%。`);SFX.guard()}
+else if(type===&#x27;unique&#x27;){executeAbility(p,e,ab,false);SFX.atkH();flash(&#x27;esprite&#x27;,&#x27;damage&#x27;)}
+b.turnUsed=true;drawFight();if(e.hp&lt;=0){handleEnemyDown();return}setTimeout(enemyTurn,500)}
+function executeAbility(p,e,ab,isBoss){
+switch(ab.type){
+case&#x27;heal_guard&#x27;:p.hp=Math.min(p.max,p.hp+Math.round(p.max*.12));S.battle.guard=true;fsay(`${p.n}使用${ab.name}：回复生命并减伤！`);break;
+case&#x27;hit_weaken&#x27;:{const d=calcDmg(p,e,1.5,false);e.status.atkDebuff=(e.status.atkDebuff||0)+4;fsay(`${p.n}使用${ab.name}：造成${d}伤害，削弱敌攻！`);break}
+case&#x27;hit_poison&#x27;:{const d=calcDmg(p,e,1.4,false);applyStatus(e,&#x27;poison&#x27;);fsay(`${p.n}使用${ab.name}：造成${d}伤害并中毒！`);break}
+case&#x27;big_hit&#x27;:{const d=calcDmg(p,e,ab.power||2.0,false);fsay(`${p.n}使用${ab.name}：造成${d}伤害！`);break}
+case&#x27;double_hit&#x27;:{const d1=calcDmg(p,e,1.0,false),d2=calcDmg(p,e,1.0,false);fsay(`${p.n}使用${ab.name}：造成${d1}+${d2}伤害！`);break}
+case&#x27;hit_drain&#x27;:{const d=calcDmg(p,e,1.5,false);p.en=Math.min(5,p.en+1);fsay(`${p.n}使用${ab.name}：造成${d}伤害，回复1能量。`);break}
+case&#x27;burn&#x27;:{const d=calcDmg(p,e,ab.power||1.4,false);applyStatus(e,&#x27;burn&#x27;);fsay(`${p.n}使用${ab.name}：造成${d}伤害并灼烧！`);SFX.status();break}
+case&#x27;burn_chance&#x27;:{const d=calcDmg(p,e,ab.power||2.0,false);if(Math.random()&lt;(ab.chance||.5)){applyStatus(e,&#x27;burn&#x27;);fsay(`${p.n}使用${ab.name}：造成${d}伤害，附加灼烧！`);SFX.status()}else fsay(`${p.n}使用${ab.name}：造成${d}伤害。`);break}
+case&#x27;burn_multi&#x27;:{const d1=calcDmg(p,e,ab.power||.9,false),d2=calcDmg(p,e,ab.power||.9,false);let msg=`${p.n}使用${ab.name}：造成${d1}+${d2}伤害。`;if(Math.random()&lt;(ab.chance||.3)){applyStatus(e,&#x27;burn&#x27;);msg+=&#x27;灼烧！&#x27;;SFX.status()}fsay(msg);break}
+case&#x27;burn_berserk&#x27;:{const low=p.hp/p.max&lt;.35;const pw=(ab.power||1.6)*(low?1.7:1);const d=calcDmg(p,e,pw,false);applyStatus(e,&#x27;burn&#x27;);fsay(`${p.n}使用${ab.name}${low?&#x27;（低血爆发）&#x27;:&#x27;&#x27;}：造成${d}伤害并灼烧！`);SFX.status();break}
+case&#x27;freeze_chance&#x27;:{const d=calcDmg(p,e,ab.power||1.4,false);if(Math.random()&lt;(ab.chance||.4)){applyStatus(e,&#x27;freeze&#x27;,1);fsay(`${p.n}使用${ab.name}：造成${d}伤害，冰冻！`);SFX.status()}else fsay(`${p.n}使用${ab.name}：造成${d}伤害。`);break}
+case&#x27;freeze_drain&#x27;:{const d=calcDmg(p,e,ab.power||1.8,false);let msg=`${p.n}使用${ab.name}：造成${d}伤害`;if(Math.random()&lt;(ab.chance||.3)){applyStatus(e,&#x27;freeze&#x27;,1);msg+=&#x27;，冰冻！&#x27;;SFX.status()}else{e.en=Math.max(0,e.en-1);msg+=&#x27;，敌方能量-1。&#x27;}fsay(msg);break}
+case&#x27;atk_weaken&#x27;:{const d=calcDmg(p,e,ab.power||1.2,false);e.status.atkDebuff=(e.status.atkDebuff||0)+5;fsay(`${p.n}使用${ab.name}：造成${d}伤害，大幅削弱敌攻。`);break}
+case&#x27;freeze_strong&#x27;:{const d=calcDmg(p,e,ab.power||1.8,false);if(Math.random()&lt;(ab.chance||.6)){applyStatus(e,&#x27;freeze&#x27;,1);fsay(`${p.n}使用${ab.name}：造成${d}伤害，冰冻！`);SFX.status()}else{applyStatus(e,&#x27;weaken&#x27;);fsay(`${p.n}使用${ab.name}：造成${d}伤害并虚弱。`)}break}
+case&#x27;paralyze_chance&#x27;:{const d=calcDmg(p,e,ab.power||1.4,false);if(Math.random()&lt;(ab.chance||.5)){applyStatus(e,&#x27;paralyze&#x27;);fsay(`${p.n}使用${ab.name}：造成${d}伤害，麻痹！`);SFX.status()}else fsay(`${p.n}使用${ab.name}：造成${d}伤害。`);break}
+case&#x27;paralyze_drain&#x27;:{const d=calcDmg(p,e,ab.power||1.3,false);e.en=Math.max(0,e.en-2);applyStatus(e,&#x27;paralyze&#x27;);fsay(`${p.n}使用${ab.name}：造成${d}伤害，麻痹并扣除2能量！`);SFX.status();break}
+case&#x27;paralyze_high&#x27;:{const d=calcDmg(p,e,ab.power||2.0,false);if(Math.random()&lt;(ab.chance||.4)){applyStatus(e,&#x27;paralyze&#x27;);fsay(`${p.n}使用${ab.name}：造成${d}伤害，麻痹！`);SFX.status()}else fsay(`${p.n}使用${ab.name}：造成${d}伤害。`);break}
+case&#x27;paralyze_strong&#x27;:{const d=calcDmg(p,e,ab.power||2.2,false);applyStatus(e,&#x27;paralyze&#x27;);fsay(`${p.n}使用${ab.name}：造成${d}伤害，麻痹！`);SFX.status();break}
+case&#x27;poison2&#x27;:{const d=calcDmg(p,e,ab.power||1.2,false);applyStatus(e,&#x27;poison&#x27;);applyStatus(e,&#x27;poison&#x27;);fsay(`${p.n}使用${ab.name}：造成${d}伤害，中毒×2！`);SFX.status();break}
+case&#x27;poison_weaken&#x27;:{const d=calcDmg(p,e,ab.power||1.6,false);applyStatus(e,&#x27;weaken&#x27;);fsay(`${p.n}使用${ab.name}：造成${d}伤害并虚弱！`);SFX.status();break}
+case&#x27;poison_multi&#x27;:{const d1=calcDmg(p,e,ab.power||.9,false),d2=calcDmg(p,e,ab.power||.9,false);let msg=`${p.n}使用${ab.name}：造成${d1}+${d2}伤害。`;if(Math.random()&lt;.5){applyStatus(e,&#x27;poison&#x27;);msg+=&#x27;中毒！&#x27;}if(Math.random()&lt;.5){applyStatus(e,&#x27;poison&#x27;);msg+=&#x27;再中毒！&#x27;}fsay(msg);SFX.status();break}
+case&#x27;poison_extra&#x27;:{const hadPoison=e.status.poison&gt;0;const pw=(ab.power||1.5)*(hadPoison?1.5:1);const d=calcDmg(p,e,pw,false);applyStatus(e,&#x27;poison&#x27;);fsay(`${p.n}使用${ab.name}：造成${d}伤害${hadPoison?&#x27;（对中毒目标额外伤害）&#x27;:&#x27;&#x27;}，附加中毒！`);SFX.status();break}
+case&#x27;poison_fog&#x27;:{const d=calcDmg(p,e,ab.power||1.0,false);applyStatus(e,&#x27;poison&#x27;);applyStatus(e,&#x27;poison&#x27;);S.battle.guard=true;fsay(`${p.n}使用${ab.name}：造成${d}伤害，中毒×2，本回合受伤减半！`);SFX.status();break}}}
+function chooseEnemyAction(e){if(e.en&gt;=5)return e.en&gt;=3?&#x27;heavy&#x27;:&#x27;light&#x27;;if(e.en&lt;2)return Math.random()&lt;.6?&#x27;rest&#x27;:&#x27;guard&#x27;;const r=Math.random();if(r&lt;.5)return e.en&gt;=3&amp;&amp;Math.random()&lt;.5?&#x27;heavy&#x27;:&#x27;light&#x27;;if(r&lt;.75)return&#x27;rest&#x27;;return&#x27;guard&#x27;}
+function enemyTurn(){
+const b=S.battle;if(!b||b.done)return;
+const p=pFish(),e=eFish();if(!p||!e||e.hp&lt;=0)return;if(p.hp&lt;=0){handlePlayerDown();return}
+const tick=doStatusTick(e);if(tick.total&gt;0){fsay(`${e.n}受到状态伤害：${tick.parts.join(&#x27;、&#x27;)}。`);if(e.hp&lt;=0){handleEnemyDown();return}}
+if(e.status.freeze&gt;0){e.status.freeze--;fsay(`${e.n}被冰冻，无法行动！`);b.turnUsed=false;b.guard=false;b.switchShield=false;drawFight();return}
+if(e.status.paralyze&gt;0&amp;&amp;Math.random()&lt;.25){fsay(`${e.n}被麻痹，无法行动！`);b.turnUsed=false;b.guard=false;b.switchShield=false;drawFight();return}
+const boss=b.mode===&#x27;boss&#x27;?bosses[S.zone]:null;
+const useBossAb=boss&amp;&amp;Math.random()&lt;.35&amp;&amp;e.en&gt;=boss.ab.cost;
+const action=useBossAb?&#x27;bossab&#x27;:chooseEnemyAction(e);
+const shield=b.switchShield;
+if(action===&#x27;light&#x27;){e.en-=1;const raw=calcDmg(e,p,1.3,b.guard);if(shield){p.hp=Math.min(p.max,p.hp+Math.round(raw*.2));fsay(`${e.n}轻攻击，换人减伤 -20%！`)}else fsay(`${e.n}轻攻击，造成${raw}伤害。`);SFX.hit();flash(&#x27;asprite&#x27;,&#x27;damage&#x27;)}
+else if(action===&#x27;heavy&#x27;){e.en-=3;const raw=calcDmg(e,p,2.2,b.guard);if(shield){p.hp=Math.min(p.max,p.hp+Math.round(raw*.2));fsay(`${e.n}重攻击，换人减伤 -20%！`)}else fsay(`${e.n}重攻击，造成${raw}伤害！`);SFX.hit();flash(&#x27;asprite&#x27;,&#x27;damage&#x27;)}
+else if(action===&#x27;rest&#x27;){e.en=Math.min(5,e.en+2);const heal=Math.round(e.max*.1);e.hp=Math.min(e.max,e.hp+heal);fsay(`${e.n}休整：恢复${heal}血，能量+2。`)}
+else if(action===&#x27;guard&#x27;){e.en=Math.min(5,e.en+1);e.guardNext=true;fsay(`${e.n}进入防御。`)}
+else if(action===&#x27;bossab&#x27;){e.en-=boss.ab.cost;executeAbility(e,p,boss.ab,true)}
+if(b.guard&amp;&amp;(action===&#x27;light&#x27;||action===&#x27;heavy&#x27;||action===&#x27;bossab&#x27;)){p.en=Math.min(5,p.en+1);fsay(`${p.n}挡住攻势，额外+1能量。`)}
+b.guard=false;b.switchShield=false;
+if(p.hp&lt;=0){handlePlayerDown();return}
+b.turnUsed=false;drawFight()}
+function handleEnemyDown(){const b=S.battle;fsay(`${eFish().n}倒下了！`);if(b.enemyTeam&amp;&amp;b.enemyIdx&lt;b.enemyTeam.length-1){b.enemyIdx++;fsay(`${eFish().n}上场！`);drawFight();setTimeout(enemyTurn,500);return true}finishBattle(true);return true}
+function handlePlayerDown(){const b=S.battle;if(!b||b.done)return;const fallen=pFish();fsay(`${fallen.n}倒下了！`);const nextIdx=b.playerTeam.findIndex((f,i)=&gt;i!==b.playerIdx&amp;&amp;f.hp&gt;0);if(nextIdx&gt;=0){b.playerIdx=nextIdx;b.guard=false;b.switchShield=false;b.turnUsed=false;fsay(`${pFish().n}接替上场！继续战斗！`);drawFight();return}fsay(&#x27;全队鱼类全部阵亡！&#x27;);finishBattle(false)}
+function finishBattle(win){const b=S.battle;b.done=true;if(b.mode===&#x27;boss&#x27;)BGM.setBoss(false);
+if(win){if(b.mode===&#x27;boss&#x27;){const id=zone().id;const wins=S.bossWins[id]||0;S.bossWins[id]=wins+1;S.bossLevels[id]=(S.bossLevels[id]||0)+1;if(wins===0){S.treasure+=1;S.feed+=2;S.coins+=100;fsay(&#x27;🎉 鱼王首胜奖励：宝物×1、育成道具×2、金币100！本海域鱼王永久提升至Lv.&#x27;+(S.bossLevels[id]+1)+&#x27;。&#x27;)}else{S.feed+=1;S.coins+=50;fsay(&#x27;🎉 鱼王胜利奖励：育成道具×1、金币50！本海域鱼王永久提升至Lv.&#x27;+(S.bossLevels[id]+1)+&#x27;。&#x27;)}SFX.win()}
+else if(b.mode===&#x27;arena&#x27;){const id=zone().id;const streak=(S.arenaWins[id]||0)+1;const best=S.arenaBest[id]||0;S.arenaWins[id]=streak;S.wins=streak;if(streak&gt;best){S.arenaBest[id]=streak;S.coins+=60;S.feed+=1;fsay(`🏆 打破${zone().n}竞技场历史最高连胜！当前连胜${streak}，必得金币60+育成道具×1！`)}else if(Math.random()&lt;.7){S.coins+=50;fsay(`🎉 ${zone().n}竞技场胜利！获得金币50G，当前连胜${streak}，历史最高${best}。`)}else{S.feed+=1;fsay(`🎉 ${zone().n}竞技场胜利！获得育成道具×1，当前连胜${streak}，历史最高${best}。`)}SFX.win()}
+else{const j=1+(Math.random()&lt;.5?1:0);S.junk+=j;fsay(`🎉 获得杂物×${j}（可出售换金币）。`);if(Math.random()&lt;.15){S.feed++;fsay(&#x27;✨ 额外获得育成道具×1！&#x27;)}SFX.win()}}
+else{if(b.mode===&#x27;arena&#x27;){S.arenaWins[zone().id]=0;S.wins=0;fsay(`💀 ${zone().n}竞技场战败！本海域连胜清零，历史最高纪录保留。`)}else fsay(&#x27;💀 战斗失败……先去休整吧。&#x27;);SFX.lose()}
+$(&#x27;battleTitle&#x27;).textContent=win?&#x27;胜利！&#x27;:&#x27;战败……&#x27;;$(&#x27;fightmsg&#x27;).textContent=win?&#x27;🎉 战斗胜利！&#x27;:&#x27;出战鱼需要休整。&#x27;;drawFight();render();save()}
+$(&#x27;atkL&#x27;).onclick=()=&gt;playerAction(&#x27;light&#x27;);
+$(&#x27;atkH&#x27;).onclick=()=&gt;playerAction(&#x27;heavy&#x27;);
+$(&#x27;wait&#x27;).onclick=()=&gt;playerAction(&#x27;rest&#x27;);
+$(&#x27;guard&#x27;).onclick=()=&gt;playerAction(&#x27;guard&#x27;);
+$(&#x27;unique&#x27;).onclick=()=&gt;playerAction(&#x27;unique&#x27;);
+$(&#x27;capture&#x27;).onclick=()=&gt;{const b=S.battle;if(!b||b.done)return;const e=eFish();if(e.hp/e.max&gt;.35)return fsay(&#x27;对手体力太高，无法收服。&#x27;);if(Math.random()&lt;.55){const f=def(e.id&amp;&amp;species[e.id]?e.id:&#x27;minnow&#x27;,&#x27;稀有&#x27;);S.fish.push(f);fsay(&#x27;成功收服&#x27;+f.n+&#x27;！&#x27;);finishBattle(true)}else{fsay(&#x27;收服失败！&#x27;);setTimeout(enemyTurn,400)}};
+$(&#x27;switchBtn&#x27;).onclick=()=&gt;{const b=S.battle;if(!b||b.done)return;if(b.mode===&#x27;wild&#x27;)return fsay(&#x27;遭遇战无法换鱼。&#x27;);if(b.turnUsed)return fsay(&#x27;本回合已经行动过了。&#x27;);const list=b.playerTeam.map((f,i)=&gt;{if(f.hp&lt;=0||i===b.playerIdx)return&#x27;&#x27;;return`&lt;button class=&quot;fish&quot; onclick=&quot;doSwitch(${i})&quot;&gt;&lt;div class=&quot;em&quot;&gt;${f.em}&lt;/div&gt;&lt;b&gt;${f.n}&lt;/b&gt;&lt;small&gt;${f.hp}/${f.max}&lt;/small&gt;&lt;/button&gt;`}).join(&#x27;&#x27;);$(&#x27;switchList&#x27;).innerHTML=list||&#x27;&lt;p class=&quot;muted&quot;&gt;无可替换的鱼。&lt;/p&gt;&#x27;;$(&#x27;switchPanel&#x27;).classList.remove(&#x27;hide&#x27;)};
+window.doSwitch=function(idx){const b=S.battle;if(!b||b.turnUsed)return;b.playerIdx=idx;b.guard=false;b.turnUsed=true;b.switchShield=true;$(&#x27;switchPanel&#x27;).classList.add(&#x27;hide&#x27;);fsay(`你换上了${pFish().n}，本回合受伤 -20%，对手趁机行动！`);SFX.switchFish();drawFight();setTimeout(enemyTurn,500)};
+$(&#x27;leave&#x27;).onclick=()=&gt;{BGM.setBoss(false);S.battle=null;$(&#x27;fight&#x27;).classList.add(&#x27;hide&#x27;);showtab(&#x27;fish&#x27;)};
+/* ============ 竞技场 / 鱼王 ============ */
+$(&#x27;arena&#x27;).onclick=()=&gt;{const tf=teamFish();if(tf.length===0)return say(&#x27;先捕获鱼类。&#x27;);if(!tf.some(f=&gt;f.hp&gt;0))return say(&#x27;全队需要休整。&#x27;);const ids=zone().fish;const level=(S.arenaWins[zone().id]||0)+1;const enemyTeam=Array.from({length:6},(_,i)=&gt;{const id=ids[(S.wins+i)%ids.length];const e=def(id);e.n=&#x27;Lv.&#x27;+level+&#x27; 竞技对手·&#x27;+e.n;e.max=Math.round(e.max*(1+(level-1)*.18));e.hp=e.max;e.atk=Math.round(e.atk*(1+(level-1)*.12));e.en=2;return e});startBattle(enemyTeam[0],&#x27;arena&#x27;,enemyTeam)};
+$(&#x27;boss&#x27;).onclick=()=&gt;{const tf=teamFish();if(!tf.some(f=&gt;f.hp&gt;0))return say(&#x27;全队需要休整。&#x27;);const d=bosses[S.zone];const level=(S.bossLevels[d.id]||0)+1;const hpScale=1+(level-1)*.18,atkScale=1+(level-1)*.12;const max=Math.round(d.hp*hpScale);const e={id:&#x27;boss&#x27;,n:`Lv.${level} ${d.n}`,em:d.em,role:d.role,element:d.element||null,max,hp:max,atk:Math.round(d.atk*atkScale),en:2,status:emptyStatus(),skill:null};startBattle(e,&#x27;boss&#x27;)};
+/* ============ 导航 ============ */
+function go(v){document.querySelectorAll(&#x27;.view&#x27;).forEach(x=&gt;x.classList.remove(&#x27;active&#x27;));$(v).classList.add(&#x27;active&#x27;);if(v===&#x27;game&#x27;)render();window.scrollTo(0,0)}
+window.go=go;
+render();say(&#x27;欢迎来到第五版！🎣 抛竿后等咬钩提示，在 1.5 秒内点「收竿」，完美收竿稀有度更高。&#x27;);
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;
+
+
+"></iframe></div></div>
+
 <script>
+/* ================= 音乐与音效（Web Audio 实时合成，无需外部音频文件） ================= */
+const AudioBox = (() => {
+  let ctx = null, master = null, musicOn = false, soundOn = true, melodyTimer = null, note = 0;
+  const melody = [523.25,659.25,783.99,659.25,587.33,698.46,880,698.46,523.25,659.25,783.99,1046.5,880,783.99,659.25,587.33];
+  function init() {
+    if (!ctx) { ctx = new (window.AudioContext || window.webkitAudioContext)(); master = ctx.createGain(); master.gain.value = .22; master.connect(ctx.destination); }
+    if (ctx.state === 'suspended') ctx.resume();
+  }
+  function tone(freq, duration=.12, type='sine', volume=.12, when=0) {
+    if (!ctx) return;
+    const t = ctx.currentTime + when, osc = ctx.createOscillator(), gain = ctx.createGain();
+    osc.type = type; osc.frequency.setValueAtTime(freq,t);
+    gain.gain.setValueAtTime(.0001,t); gain.gain.exponentialRampToValueAtTime(volume,t+.012);
+    gain.gain.exponentialRampToValueAtTime(.0001,t+duration);
+    osc.connect(gain); gain.connect(master); osc.start(t); osc.stop(t+duration+.02);
+  }
+  function sfx(kind) {
+    if (!soundOn) return; init();
+    if (kind==='eat') { tone(660,.09,'sine',.16); tone(880,.13,'sine',.13,.08); }
+    else if (kind==='move') tone(260,.035,'square',.035);
+    else if (kind==='drop') { tone(180,.1,'triangle',.12); tone(110,.12,'triangle',.08,.07); }
+    else if (kind==='clear') [523,659,784,1047].forEach((f,i)=>tone(f,.18,'sine',.12,i*.07));
+    else if (kind==='over') [392,330,262,196].forEach((f,i)=>tone(f,.22,'triangle',.1,i*.16));
+    else if (kind==='click') tone(740,.055,'sine',.07);
+  }
+  function startMusic() {
+    init(); if (musicOn) return; musicOn=true; note=0;
+    const play = () => { if (!musicOn) return; tone(melody[note%melody.length],.27,'sine',.045); if (note%4===0) tone(melody[note%melody.length]/2,.32,'triangle',.025); note++; };
+    play(); melodyTimer=setInterval(play,310);
+    document.getElementById('music-toggle').textContent='♫ 关闭音乐';
+  }
+  function stopMusic() { musicOn=false; clearInterval(melodyTimer); melodyTimer=null; const b=document.getElementById('music-toggle'); if(b)b.textContent='♫ 开启音乐'; }
+  function toggleMusic() { musicOn ? stopMusic() : startMusic(); }
+  function toggleSound() { soundOn=!soundOn; document.getElementById('sound-toggle').textContent='🔊 音效：'+(soundOn?'开':'关'); }
+  return { sfx,toggleMusic,toggleSound,get musicOn(){return musicOn;} };
+})();
+const Records = {
+  get(k){ return Number(localStorage.getItem('mini-'+k)||0); },
+  set(k,v){ if(v>this.get(k)) localStorage.setItem('mini-'+k,String(v)); this.refresh(); },
+  played(){ localStorage.setItem('mini-played',String(this.get('played')+1)); this.refresh(); },
+  refresh(){
+    const a=document.getElementById('best-snake'),b=document.getElementById('best-tetris'),c=document.getElementById('played-count');
+    if(a)a.textContent=this.get('snake'); if(b)b.textContent=this.get('tetris'); if(c)c.textContent=this.get('played');
+  }
+};
+function gameSpeed(base) { const d=document.getElementById('difficulty')?.value||'normal'; return Math.max(65,Math.round(base*(d==='easy'?1.35:d==='hard'?.72:1))); }
+
 /* ================= 视图切换 ================= */
 let currentView = 'home';
 
@@ -157,8 +574,10 @@ function showView(name) {
   document.getElementById('view-' + name).classList.add('active');
   currentView = name;
 
-  if (name === 'snake')  Snake.start();
-  if (name === 'tetris') Tetris.start();
+  if (name === 'snake')  { Snake.start(); Records.played(); }
+  if (name === 'tetris') { Tetris.start(); Records.played(); }
+  if (name === 'fishing') { Records.played(); }
+  AudioBox.sfx('click');
   window.scrollTo(0, 0);
 }
 
@@ -175,18 +594,19 @@ const Snake = (() => {
   const CELL = canvas.width / N;
   const scoreEl = document.getElementById('snake-score');
 
-  let snake, dir, nextDir, food, score, timer, over;
+  let snake, dir, nextDir, food, score, timer, over, paused=false;
 
   function reset() {
     snake = [{ x: 9, y: 10 }, { x: 8, y: 10 }, { x: 7, y: 10 }];
     dir = { x: 1, y: 0 };
     nextDir = { x: 1, y: 0 };
     score = 0;
-    over = false;
+    over = false; paused=false;
+    const pauseBtn=document.getElementById('snake-pause'); if(pauseBtn)pauseBtn.textContent='⏸ 暂停';
     scoreEl.textContent = '0';
     placeFood();
     clearInterval(timer);
-    timer = setInterval(step, 130);
+    timer = setInterval(step, gameSpeed(130));
     draw();
   }
 
@@ -199,13 +619,14 @@ const Snake = (() => {
   }
 
   function step() {
-    if (over) return;
+    if (over || paused) return;
     dir = nextDir;
     const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
 
     if (head.x < 0 || head.y < 0 || head.x >= N || head.y >= N ||
         snake.some(s => s.x === head.x && s.y === head.y)) {
       over = true;
+      Records.set('snake',score); AudioBox.sfx('over');
       clearInterval(timer);
       draw();
       return;
@@ -214,7 +635,7 @@ const Snake = (() => {
     snake.unshift(head);
     if (head.x === food.x && head.y === food.y) {
       score += 10;
-      scoreEl.textContent = score;
+      scoreEl.textContent = score; AudioBox.sfx('eat');
       placeFood();
     } else {
       snake.pop();
@@ -288,6 +709,7 @@ const Snake = (() => {
   return {
     start() { reset(); },
     stop()  { clearInterval(timer); },
+    pause() { paused=!paused; document.getElementById('snake-pause').textContent=paused?'▶ 继续':'⏸ 暂停'; },
     reset, key, turn
   };
 })();
@@ -301,7 +723,8 @@ document.querySelectorAll('[data-dir]').forEach(b => {
     if (d === 'right') Snake.turn(1, 0);
   });
 });
-document.getElementById('snake-restart').addEventListener('click', () => Snake.reset());
+document.getElementById('snake-restart').addEventListener('click', () => { Snake.reset(); AudioBox.sfx('click'); });
+document.getElementById('snake-pause').addEventListener('click', () => Snake.pause());
 
 /* ================= 俄罗斯方块 ================= */
 const Tetris = (() => {
@@ -333,13 +756,14 @@ const Tetris = (() => {
 
   function schedule() {
     clearInterval(timer);
-    timer = setInterval(tick, speed());
+    timer = setInterval(tick, gameSpeed(speed()));
   }
 
   function reset() {
     board = newBoard();
     score = 0; lines = 0; level = 1;
     over = false; paused = false;
+    const pauseBtn=document.getElementById('tetris-pause'); if(pauseBtn)pauseBtn.textContent='⏸ 暂停';
     scoreEl.textContent = '0';
     spawn();
     schedule();
@@ -355,7 +779,7 @@ const Tetris = (() => {
       y: 0
     };
     if (collide(piece.shape, piece.x, piece.y)) {
-      over = true;
+      over = true; Records.set('tetris',score); AudioBox.sfx('over');
       clearInterval(timer);
     }
   }
@@ -398,6 +822,7 @@ const Tetris = (() => {
       const nl = Math.floor(lines / 10) + 1;
       if (nl > level) { level = nl; schedule(); }
       scoreEl.textContent = score;
+      AudioBox.sfx('clear');
     }
   }
 
@@ -452,7 +877,7 @@ const Tetris = (() => {
   function hardDrop() {
     if (over || paused) return;
     while (!collide(piece.shape, piece.x, piece.y + 1)) piece.y++;
-    merge(); clearLines(); spawn(); draw();
+    merge(); AudioBox.sfx('drop'); clearLines(); spawn(); draw();
   }
 
   function cell(x, y, color) {
@@ -534,7 +959,140 @@ document.querySelectorAll('[data-t]').forEach(b => {
     if (t === 'drop')   Tetris.hardDrop();
   });
 });
-document.getElementById('tetris-restart').addEventListener('click', () => Tetris.reset());
+document.getElementById('tetris-restart').addEventListener('click', () => { Tetris.reset(); AudioBox.sfx('click'); });
+document.getElementById('tetris-pause').addEventListener('click', () => Tetris.pause());
+
+document.getElementById('music-toggle').addEventListener('click', () => AudioBox.toggleMusic());
+document.getElementById('sound-toggle').addEventListener('click', () => AudioBox.toggleSound());
+document.getElementById('difficulty').addEventListener('change', () => AudioBox.sfx('click'));
+Records.refresh();
+
+
+/* ================= 钓鱼电子斗蛐蛐原型 ================= */
+const Fishing = (() => {
+  const $ = id => document.getElementById(id);
+  const species = [
+    {id:'minnow',name:'银光小鱼',emoji:'🐟',rarity:'common',base:18,price:12,areas:['pond','river'],bait:['worm','grain']},
+    {id:'carp',name:'锦鲤',emoji:'🐠',rarity:'uncommon',base:32,price:25,areas:['pond','river'],bait:['grain','worm']},
+    {id:'catfish',name:'大胡子鲶鱼',emoji:'🐡',rarity:'uncommon',base:40,price:32,areas:['river','lake'],bait:['worm','shrimp']},
+    {id:'pike',name:'翠刃狗鱼',emoji:'🐟',rarity:'rare',base:48,price:48,areas:['river','lake'],bait:['shrimp']},
+    {id:'goldfish',name:'黄金金鱼',emoji:'🐠',rarity:'epic',base:45,price:75,areas:['pond','lake'],bait:['grain','glow']},
+    {id:'moon',name:'月影鱼',emoji:'🐟',rarity:'legend',base:65,price:120,areas:['lake'],bait:['glow']}
+  ];
+  const state = {coins:120,rod:1,line:1,fish:[],cast:false,battle:null,selected:null,area:'pond',bait:'worm',guard:false};
+  const rarityNames={common:'普通',uncommon:'优秀',rare:'稀有',epic:'史诗',legend:'传说'};
+  const rarityClass=r=>'rarity-'+r;
+  function log(msg){const el=$('fish-log');el.innerHTML=msg+'<br>'+el.innerHTML;}
+  function save(){try{localStorage.setItem('fishing-proto-save',JSON.stringify({coins:state.coins,rod:state.rod,line:state.line,fish:state.fish}));}catch(e){}}
+  function load(){try{const d=JSON.parse(localStorage.getItem('fishing-proto-save')||'null');if(d){state.coins=d.coins??120;state.rod=d.rod??1;state.line=d.line??1;state.fish=d.fish||[];}}catch(e){}}
+  function render(){
+    $('fish-coins').textContent=state.coins;$('rod-level').textContent='Lv.'+state.rod;$('line-level').textContent='Lv.'+state.line;
+    $('rod-cost').textContent=80*state.rod;$('line-cost').textContent=60*state.line;$('fish-count').textContent=state.fish.length;
+    $('fish-record').textContent=state.fish.length?Math.max(...state.fish.map(f=>f.length))+' cm':'暂无';
+    $('fish-collection').innerHTML=state.fish.slice(-12).reverse().map((f,i)=>`<button class="fish-chip" data-fish-index="${state.fish.length-1-i}"><span class="${rarityClass(f.rarity)}">${f.emoji} ${f.name}</span><br><b>${f.length}cm</b></button>`).join('')||'<span class="hint">还没有鱼，快去钓鱼吧！</span>';
+    $('fish-team').innerHTML='<option value="">选择出战鱼</option>'+state.fish.map((f,i)=>`<option value="${i}" ${state.selected===i?'selected':''}>${f.name} · ${f.length}cm · Lv.${f.level||1}</option>`).join('');
+    $('fish-cast').disabled=state.cast||!!state.battle;$('fish-reel').disabled=!state.cast;
+    $('upgrade-rod').disabled=state.coins<80*state.rod;$('upgrade-line').disabled=state.coins<60*state.line;
+  }
+  function areaName(){return {pond:'宁静池塘',river:'清澈河流',lake:'星辉湖泊'}[state.area];}
+  function chooseCatch(){
+    let pool=species.filter(s=>s.areas.includes(state.area));
+    const bait=state.bait;pool=pool.filter(s=>s.bait.includes(bait)||bait==='glow');
+    const rareBoost=(state.rod-1)*.025+(bait==='glow'?.13:0);
+    let weights=pool.map(s=>s.rarity==='common'?55:s.rarity==='uncommon'?25:s.rarity==='rare'?12:s.rarity==='epic'?6:2);
+    weights=weights.map((w,i)=>w*(pool[i].rarity==='legend'||pool[i].rarity==='epic'?1+rareBoost:1));
+    let r=Math.random()*weights.reduce((a,b)=>a+b,0);
+    for(let i=0;i<pool.length;i++){r-=weights[i];if(r<=0)return pool[i];}
+    return pool[0];
+  }
+  function cast(){
+    if(state.cast||state.battle)return;
+    state.area=$('fish-area').value;state.bait=$('fish-bait').value;
+    const unlock={pond:0,river:200,lake:650}[state.area];
+    if(state.coins<unlock){$('fish-status').textContent='金币不足，暂时无法前往这个区域。';return;}
+    if(state.area==='river'&&state.rod<2){$('fish-status').textContent='清澈河流需要 Lv.2 鱼竿才能安全垂钓！';return;}
+    if(state.area==='lake'&&state.rod<4){$('fish-status').textContent='星辉湖泊需要 Lv.4 鱼竿才能前往！';return;}
+    state.cast=true;$('fish-scene').textContent='🎣 〰️ 🌊';$('fish-status').textContent='鱼线入水了……耐心等待鱼儿咬钩！';
+    AudioBox.sfx('click');setTimeout(()=>{
+      if(!state.cast)return;
+      if(Math.random()<.23){state.cast=false;startBattle();return;}
+      const s=chooseCatch();const length=Math.round(s.base*(.65+Math.random()*.55)*(1+(state.rod-1)*.035));
+      landFish(s,length);
+    },1800+Math.random()*1800);
+    render();
+  }
+  function landFish(s,length){
+    state.cast=false;
+    const prev=Math.max(0,...state.fish.filter(f=>f.id===s.id).map(f=>f.length));
+    const isRecord=length>prev;
+    const fish={...s,length,level:1,hp:Math.round(24+length*.65),maxHp:Math.round(24+length*.65),atk:Math.round(5+length*.19),def:Math.round(2+length*.07),speed:Math.round(5+length*.05)};
+    state.fish.push(fish);state.selected=state.fish.length-1;
+    $('fish-scene').textContent=isRecord?'✨🌟'+s.emoji+'🌟✨':s.emoji;
+    $('fish-status').innerHTML=`钓到了 <b class="${rarityClass(s.rarity)}">${rarityNames[s.rarity]} ${s.name}</b>！体长 ${length} cm。`+(isRecord?'<br><b style="color:#c18a25">✨ 品种新纪录！金光闪耀！</b>':'');
+    log((isRecord?'✨ 新纪录！':'🎣')+` 获得${s.name}，${length}cm。`);
+    AudioBox.sfx(isRecord?'clear':'eat');save();render();
+    // A record-sized fish glows; a random fish may also start a battle.
+  }
+  function startBattle(){
+    if(!state.fish.length){$('fish-status').textContent='水面突然出现了凶猛的野生鱼！但你还没有自己的鱼，只能暂时躲避。';$('fish-scene').textContent='🦈💦';log('遭遇野生鱼！先钓到一条鱼，才能组建战队。');return;}
+    let idx=Number($('fish-team').value);if(!$('fish-team').value)idx=state.selected??0;
+    if(!state.fish[idx])idx=0;state.selected=idx;
+    const own=state.fish[idx],wild=species.filter(s=>s.rarity==='rare'||s.rarity==='epic'||s.rarity==='uncommon')[Math.floor(Math.random()*3)];
+    const factor=.8+Math.random()*.5;
+    state.battle={own,wild:{...wild,hp:Math.round((26+wild.base*.65)*factor),maxHp:Math.round((26+wild.base*.65)*factor),atk:Math.round(6+wild.base*.2),def:Math.round(2+wild.base*.07)},turn:1};
+    $('fish-battle-panel').style.display='block';$('battle-status').textContent='野生'+wild.name+'挡住了去路！你的鱼会自动攻击，选择技能支援！';
+    $('battle-player-emoji').textContent=own.emoji;$('battle-player-name').textContent=own.name;
+    $('battle-wild-emoji').textContent=wild.emoji;$('battle-wild-name').textContent='野生'+wild.name;
+    log('⚔️ 遭遇战！'+own.name+' 对战 野生'+wild.name+'！');battleRender();AudioBox.sfx('over');
+  }
+  function battleRender(){
+    const b=state.battle;if(!b)return;
+    $('battle-player-hp').textContent=`HP ${Math.max(0,b.own.hp)}/${b.own.maxHp}`;$('battle-wild-hp').textContent=`HP ${Math.max(0,b.wild.hp)}/${b.wild.maxHp}`;
+    $('battle-player-hpbar').style.width=Math.max(0,b.own.hp/b.own.maxHp*100)+'%';$('battle-wild-hpbar').style.width=Math.max(0,b.wild.hp/b.wild.maxHp*100)+'%';$('battle-turn').textContent='回合 '+b.turn;
+  }
+  function battleAction(action){
+    const b=state.battle;if(!b)return;
+    const own=b.own,w=b.wild;
+    let bonus=0;
+    if(action==='skill'){bonus=9+own.atk*.65;$('battle-status').textContent=own.name+'使出强力冲击！';}
+    else if(action==='guard'){state.guard=true;$('battle-status').textContent=own.name+'进入防御姿态，抵挡下一次攻击。';}
+    else if(action==='capture'){if(w.hp<w.maxHp*.35&&Math.random()<.55){log('🫧 成功收服野生'+w.name+'！');const caught={...w,id:w.id,name:w.name,emoji:w.emoji,rarity:w.rarity,length:Math.round(w.base*.8),level:1};state.fish.push(caught);finishBattle(true);return;}else $('battle-status').textContent='收服失败！野生鱼趁机发动攻击！';}
+    if(action!=='guard'&&action!=='capture')w.hp-=Math.max(1,own.atk+bonus-w.def);
+    if(w.hp<=0){finishBattle(true);return;}
+    const damage=Math.max(1,w.atk-own.def-(state.guard?8:0));own.hp-=damage;state.guard=false;
+    if(own.hp<=0){finishBattle(false);return;}
+    b.turn++;battleRender();AudioBox.sfx(action==='skill'?'clear':'move');
+    $('battle-status').textContent+=` 野生鱼反击，造成 ${damage} 点伤害。`;
+  }
+  function finishBattle(win){
+    if(win){state.coins+=35;log('🏆 战斗胜利！获得 35 金币和经验！');$('battle-status').textContent='胜利！获得 35 金币。';}
+    else{$('battle-status').textContent='战败了……休整后再来挑战吧。';log('💦 战斗失败，鱼队需要休整。');}
+    state.battle=null;save();render();$('fish-battle-panel').dataset.finished='1';
+    // Keep result panel visible until next cast; buttons become harmless without an active battle.
+  }
+  function upgrade(which){
+    const cost=(which==='rod'?80*state.rod:60*state.line);
+    if(state.coins<cost)return;
+    state.coins-=cost;state[which]++;log((which==='rod'?'🎣 鱼竿':'🧵 鱼线')+'升级至 Lv.'+state[which]+'！');AudioBox.sfx('clear');save();render();
+  }
+  function sell(){
+    const idx=Number($('fish-team').value);if(!$('fish-team').value||!state.fish[idx])return;
+    const f=state.fish[idx];state.coins+=f.price+Math.floor(f.length/5);state.fish.splice(idx,1);state.selected=state.fish.length?0:null;
+    log('🪙 出售'+f.name+'，获得金币。');save();render();
+  }
+  function heal(){state.fish.forEach(f=>f.hp=f.maxHp);log('💚 鱼队已经恢复状态！');render();}
+  function init(){
+    load();render();
+    $('fish-cast').addEventListener('click',cast);
+    $('fish-reel').addEventListener('click',()=>{if(state.cast){state.cast=false;landFish(chooseCatch(),Math.round(20+Math.random()*15));}});
+    $('upgrade-rod').addEventListener('click',()=>upgrade('rod'));$('upgrade-line').addEventListener('click',()=>upgrade('line'));
+    $('fish-sell').addEventListener('click',sell);$('fish-heal').addEventListener('click',heal);
+    $('fish-team').addEventListener('change',()=>{state.selected=Number($('fish-team').value);});
+    $('battle-skill').addEventListener('click',()=>battleAction('skill'));$('battle-guard').addEventListener('click',()=>battleAction('guard'));$('battle-capture').addEventListener('click',()=>battleAction('capture'));
+    $('fish-collection').addEventListener('click',e=>{const b=e.target.closest('[data-fish-index]');if(b){state.selected=Number(b.dataset.fishIndex);$('fish-team').value=String(state.selected);}});
+  }
+  return {init};
+})();
 
 /* ================= 全局键盘 ================= */
 document.addEventListener('keydown', e => {
